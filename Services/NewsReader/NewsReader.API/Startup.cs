@@ -31,6 +31,14 @@ namespace NewsReader.API
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddMediatR(typeof(ConfigurationController).Assembly);
 
+            // Add Cors
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddSingleton<IGetResourceNetworkClient, GetResourceNetworkClient>();
             services.AddControllers();
         }
@@ -44,7 +52,7 @@ namespace NewsReader.API
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("CorsPolicy");
             app.UseRouting();
 
             app.UseAuthorization();
