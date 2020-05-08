@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NewsReader.API.BussinessLogic.ResourceProperties.Command;
-using NewsReader.API.Models.Input;
+using ResourceConfiguration.API.BussinessLogic.ResourceProperties.Command;
+using ResourceConfiguration.API.Models.Input;
 
-namespace NewsReader.API.Controllers
+namespace ResourceConfiguration.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

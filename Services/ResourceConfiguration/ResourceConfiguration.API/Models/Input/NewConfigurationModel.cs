@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NewsReader.API.Models.Input
+namespace ResourceConfiguration.API.Models.Input
 {
     public class NewConfigurationModel
     {

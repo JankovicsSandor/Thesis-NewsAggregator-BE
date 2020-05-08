@@ -1,14 +1,14 @@
 ﻿using MediatR;
-using NewsReader.API.BussinessLogic.ResourceProperties.Command;
-using NewsReader.API.Models.Output;
-using NewsReader.API.NetworkClient;
+using ResourceConfiguration.API.BussinessLogic.ResourceProperties.Command;
+using ResourceConfiguration.API.Models.Output;
+using ResourceConfiguration.API.NetworkClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NewsReader.API.BussinessLogic.ResourceProperties.Handler
+namespace ResourceConfiguration.API.BussinessLogic.ResourceProperties.Handler
 {
     public class GetResourcePropertiesHandler : IRequestHandler<GetResourcePropertiesCommand, ResourcePropertiesModel>
     {

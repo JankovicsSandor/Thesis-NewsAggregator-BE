@@ -11,10 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NewsReader.API.Controllers;
-using NewsReader.API.NetworkClient;
+using ResourceConfiguration.API.Controllers;
+using ResourceConfiguration.API.NetworkClient;
 
-namespace NewsReader.API
+namespace ResourceConfiguration.API
 {
     public class Startup
     {

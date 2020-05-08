@@ -1,7 +1,7 @@
-﻿using NewsReader.API.Models.Output;
+﻿using ResourceConfiguration.API.Models.Output;
 using System.Threading.Tasks;
 
-namespace NewsReader.API.NetworkClient
+namespace ResourceConfiguration.API.NetworkClient
 {
     public interface IGetResourceNetworkClient
     {

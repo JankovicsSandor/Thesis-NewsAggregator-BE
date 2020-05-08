@@ -1,4 +1,4 @@
-﻿using NewsReader.API.Models.Output;
+﻿using ResourceConfiguration.API.Models.Output;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace NewsReader.API.NetworkClient
+namespace ResourceConfiguration.API.NetworkClient
 {
     public class GetResourceNetworkClient : IGetResourceNetworkClient
     {
@@ -26,7 +26,7 @@ namespace NewsReader.API.NetworkClient
             return new ResourcePropertiesModel()
             {
                 Description = item.Summary.Text,
-                Title=item.Title.Text,
+                Title = item.Title.Text,
                 Link = item.Links.FirstOrDefault().Uri.ToString(),
                 PublishDate = item.PublishDate.DateTime,
                 Author = new ResourceProvider()

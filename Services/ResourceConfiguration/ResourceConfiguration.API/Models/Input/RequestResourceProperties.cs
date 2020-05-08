@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NewsReader.API.Models.Input
+namespace ResourceConfiguration.API.Models.Input
 {
     public class RequestResourceProperties
     {
