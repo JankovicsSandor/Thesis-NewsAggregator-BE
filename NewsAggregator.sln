@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBusBase", "BuilldingBl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourceConfiguration.API", "Services\ResourceConfiguration\ResourceConfiguration.API\ResourceConfiguration.API.csproj", "{193669E1-82F1-4D3B-A0EC-8EE215417339}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceConfiguration.BackgroundJob", "Services\ResourceConfiguration\ResourceConfiguration.BackgroundJob\ResourceConfiguration.BackgroundJob.csproj", "{12C25A5D-F10A-4DB6-BACE-8CF4162B0B18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{193669E1-82F1-4D3B-A0EC-8EE215417339}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{193669E1-82F1-4D3B-A0EC-8EE215417339}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{193669E1-82F1-4D3B-A0EC-8EE215417339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C25A5D-F10A-4DB6-BACE-8CF4162B0B18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C25A5D-F10A-4DB6-BACE-8CF4162B0B18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C25A5D-F10A-4DB6-BACE-8CF4162B0B18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C25A5D-F10A-4DB6-BACE-8CF4162B0B18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{11EF908C-8906-4D02-AAA3-AF4062B9170E} = {67758459-9C37-46AE-9AC7-D147CCE7E1A4}
 		{31D67BF1-7117-40AD-BA3B-5E99D1AE7E66} = {67758459-9C37-46AE-9AC7-D147CCE7E1A4}
 		{193669E1-82F1-4D3B-A0EC-8EE215417339} = {98C9C34A-2A1C-49C2-8634-4E6A536F6747}
+		{12C25A5D-F10A-4DB6-BACE-8CF4162B0B18} = {98C9C34A-2A1C-49C2-8634-4E6A536F6747}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25E8E551-6190-435A-A26D-C5E8AD62C320}

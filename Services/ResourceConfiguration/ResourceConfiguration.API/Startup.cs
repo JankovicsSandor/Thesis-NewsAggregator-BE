@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using ResourceConfiguration.API.Controllers;
 using ResourceConfiguration.API.NetworkClient;
+using ResourceConfiguration.BackgroundJob;
+using Serilog;
 
 namespace ResourceConfiguration.API
 {
@@ -30,6 +25,9 @@ namespace ResourceConfiguration.API
         {
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddMediatR(typeof(ConfigurationController).Assembly);
+
+            services.AddHostedService<ResourceScraper>();
+
 
             // Add Cors
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
