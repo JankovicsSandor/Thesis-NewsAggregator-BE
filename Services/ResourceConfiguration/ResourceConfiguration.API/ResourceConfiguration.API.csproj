@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ResourceConfiguration.BackgroundJob\ResourceConfiguration.BackgroundJob.csproj" />
     <ProjectReference Include="..\ResourceConfigurator.DataAccess\ResourceConfigurator.DataAccess.csproj" />
+    <ProjectReference Include="..\ResourceConfigurator.NetworkClient\ResourceConfigurator.NetworkClient.csproj" />
     <ProjectReference Include="..\ResourceConfigurator.Shared\ResourceConfigurator.Shared.csproj" />
   </ItemGroup>
 

@@ -11,6 +11,8 @@ using ResourceConfigurator.DataAccess.Database;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
 using System;
+using ResourceConfigurator.NetworkClient;
+using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
 
 namespace ResourceConfiguration.API
 {
@@ -28,6 +30,10 @@ namespace ResourceConfiguration.API
         {
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddMediatR(typeof(ConfigurationController).Assembly);
+
+            services.AddHttpClient<IResourceToDataNetworkClient, ResourceToDataNetworkClient>();
+
+            services.AddTransient<IFeedReader, FeedReader>();
 
             services.AddHostedService<ResourceScraper>();
 

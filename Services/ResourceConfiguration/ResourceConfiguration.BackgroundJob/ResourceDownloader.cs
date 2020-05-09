@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ResourceConfiguration.BackgroundJob
 {
@@ -19,7 +20,14 @@ namespace ResourceConfiguration.BackgroundJob
         public async Task ProcessResources()
         {
 
-           
+
+        }
+
+
+        private async Task ProcessOneResource(Resource actualItem)
+        {
+
+           // wg
         }
     }
 }

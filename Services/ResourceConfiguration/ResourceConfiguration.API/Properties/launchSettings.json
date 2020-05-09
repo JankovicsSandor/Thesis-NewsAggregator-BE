@@ -11,10 +11,10 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
         "dbname": "newsaggregatorresource",
+        "DATA_URL": "https://localhost:44306/",
         "dbserver": "localhost",
         "port": "3308",
         "ASPNETCORE_ENVIRONMENT": "Development",
