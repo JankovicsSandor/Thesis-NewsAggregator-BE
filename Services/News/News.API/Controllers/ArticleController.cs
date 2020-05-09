@@ -21,6 +21,12 @@ namespace News.API.Controllers
             _meditor = mediator;
         }
 
+        [HttpGet("")]
+        public async Task<IActionResult> GetArticles()
+        {
+            return Ok("pong");
+        }
+
         [HttpPost("")]
         public async Task<IActionResult> AddNewArticle([FromBody] AddNewArticleCommand newArticle)
         {
