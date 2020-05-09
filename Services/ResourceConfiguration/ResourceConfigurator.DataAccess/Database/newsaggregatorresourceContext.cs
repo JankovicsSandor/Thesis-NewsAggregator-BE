@@ -68,6 +68,9 @@ namespace ResourceConfigurator.DataAccess.Database
                     .IsRequired()
                     .HasColumnName("active");
 
+                entity.Property(e => e.FeedId)
+                   .HasColumnName("feedId");
+
                 entity.Property(e => e.Url)
                     .IsRequired()
                     .HasColumnName("url")

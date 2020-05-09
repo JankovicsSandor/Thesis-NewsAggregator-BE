@@ -12,11 +12,13 @@ namespace ResourceConfiguration.BackgroundJob
     {
         private int executionCount = 0;
         private readonly ILogger<ResourceScraper> _logger;
+        private readonly IServiceProvider _services;
         private Timer _timer;
 
-        public ResourceScraper(ILogger<ResourceScraper> logger)
+        public ResourceScraper(IServiceProvider services,ILogger<ResourceScraper> logger)
         {
             _logger = logger;
+            _services = services;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
