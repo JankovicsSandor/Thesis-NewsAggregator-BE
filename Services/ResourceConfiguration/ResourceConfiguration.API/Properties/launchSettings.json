@@ -14,7 +14,12 @@
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "dbname": "newsaggregatorresource",
+        "dbserver": "localhost",
+        "port": "3308",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "dbpw": "Genius1?",
+        "dbuser": "admin"
       }
     },
     "NewsReader.API": {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ResourceConfiguration.API.BussinessLogic.AddNewResource.Command;
 using ResourceConfiguration.API.BussinessLogic.ResourceProperties.Command;
 using ResourceConfiguration.API.Models.Input;
 
@@ -21,10 +22,11 @@ namespace ResourceConfiguration.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("")]
-        public async Task<IActionResult> AddNewConfiguration()
+        [HttpPost("")]
+        public async Task<IActionResult> AddNewConfiguration([FromBody] AddNewResourceCommand command)
         {
-            return Ok(new { Ping = "pong" });
+            await _mediator.Send(command);
+            return Ok();
         }
 
 
