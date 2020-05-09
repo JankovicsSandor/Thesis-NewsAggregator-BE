@@ -27,15 +27,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourceConfiguration.Backg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourceConfigurator.DataAccess", "Services\ResourceConfiguration\ResourceConfigurator.DataAccess\ResourceConfigurator.DataAccess.csproj", "{8DDB53D3-14FA-4F4A-ACAF-B652C244EA29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceConfigurator.NetworkClient", "Services\ResourceConfiguration\ResourceConfigurator.NetworkClient\ResourceConfigurator.NetworkClient.csproj", "{23254D1A-5A3C-40F9-953A-05C56BC60A20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourceConfigurator.NetworkClient", "Services\ResourceConfiguration\ResourceConfigurator.NetworkClient\ResourceConfigurator.NetworkClient.csproj", "{23254D1A-5A3C-40F9-953A-05C56BC60A20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceConfigurator.Shared", "Services\ResourceConfiguration\ResourceConfigurator.Shared\ResourceConfigurator.Shared.csproj", "{342305D2-5F99-41D7-96D7-385CFCF72428}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourceConfigurator.Shared", "Services\ResourceConfiguration\ResourceConfigurator.Shared\ResourceConfigurator.Shared.csproj", "{342305D2-5F99-41D7-96D7-385CFCF72428}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "News.API", "Services\News\News.API\News.API.csproj", "{815A78BB-580F-4A35-AC58-2BF95DEA5DAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.API", "Services\News\News.API\News.API.csproj", "{815A78BB-580F-4A35-AC58-2BF95DEA5DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "News.DataAccess", "Services\News\News.DataAccess\News.DataAccess.csproj", "{A3BF8A8E-943B-4D1A-8F34-A7FBF944FC47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.DataAccess", "Services\News\News.DataAccess\News.DataAccess.csproj", "{A3BF8A8E-943B-4D1A-8F34-A7FBF944FC47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "News.Shared", "News.Shared\News.Shared.csproj", "{F9FAF6AC-E27D-4B93-ACCA-C9A4B1F99A94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Shared", "Services\News\News.Shared\News.Shared.csproj", "{FF22C283-A2F3-4D2D-B6A0-01319659E20E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,10 +83,10 @@ Global
 		{A3BF8A8E-943B-4D1A-8F34-A7FBF944FC47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3BF8A8E-943B-4D1A-8F34-A7FBF944FC47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3BF8A8E-943B-4D1A-8F34-A7FBF944FC47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9FAF6AC-E27D-4B93-ACCA-C9A4B1F99A94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9FAF6AC-E27D-4B93-ACCA-C9A4B1F99A94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9FAF6AC-E27D-4B93-ACCA-C9A4B1F99A94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9FAF6AC-E27D-4B93-ACCA-C9A4B1F99A94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF22C283-A2F3-4D2D-B6A0-01319659E20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF22C283-A2F3-4D2D-B6A0-01319659E20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF22C283-A2F3-4D2D-B6A0-01319659E20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF22C283-A2F3-4D2D-B6A0-01319659E20E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,7 +106,7 @@ Global
 		{342305D2-5F99-41D7-96D7-385CFCF72428} = {98C9C34A-2A1C-49C2-8634-4E6A536F6747}
 		{815A78BB-580F-4A35-AC58-2BF95DEA5DAB} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
 		{A3BF8A8E-943B-4D1A-8F34-A7FBF944FC47} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
-		{F9FAF6AC-E27D-4B93-ACCA-C9A4B1F99A94} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
+		{FF22C283-A2F3-4D2D-B6A0-01319659E20E} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25E8E551-6190-435A-A26D-C5E8AD62C320}

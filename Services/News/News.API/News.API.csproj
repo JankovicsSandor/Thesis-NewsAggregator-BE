@@ -16,10 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ResourceConfiguration\ResourceConfigurator.Shared\ResourceConfigurator.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="BussinessLogic\AddNewResource\" />
+    <ProjectReference Include="..\News.DataAccess\News.DataAccess.csproj" />
+    <ProjectReference Include="..\News.Shared\News.Shared.csproj" />
   </ItemGroup>
 
 
