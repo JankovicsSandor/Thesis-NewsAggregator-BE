@@ -16,12 +16,12 @@ namespace ResourceConfigurator.NetworkClient
         public ResourceToDataNetworkClient(HttpClient client)
         {
             _client = client;
-            string url = Environment.GetEnvironmentVariable("DATA_URL"); ;
+            string url = Environment.GetEnvironmentVariable("APPSETTING_DATA_URL");
             if (string.IsNullOrEmpty(url))
             {
                 throw new Exception("BaseUrl is empty");
             }
-            _client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("DATA_URL"));
+            _client.BaseAddress = new Uri(url);
         }
 
         public async Task AddNewArticleToData()

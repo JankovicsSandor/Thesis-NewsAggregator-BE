@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -19,9 +21,15 @@ namespace News.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configroot)
         {
-            Configuration = configuration;
+            var configBuilder = new ConfigurationBuilder();
+
+            configBuilder.AddEnvironmentVariables();
+            configBuilder.SetBasePath(env.ContentRootPath)
+                            .AddJsonFile("appsettings.json");
+
+            Configuration = configBuilder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -29,28 +37,17 @@ namespace News.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddMediatR(typeof(ArticleController).Assembly);
 
             services.AddControllers();
 
-            var dbserver = Environment.GetEnvironmentVariable("dbserver");
-            var dbuser = Environment.GetEnvironmentVariable("dbuser");
-            var dbpw = Environment.GetEnvironmentVariable("dbpw");
-            var dbname = Environment.GetEnvironmentVariable("dbname");
-            var port = Environment.GetEnvironmentVariable("port");
-
-            if (string.IsNullOrEmpty(dbserver) ||
-                string.IsNullOrEmpty(dbuser) ||
-                string.IsNullOrEmpty(port) ||
-                string.IsNullOrEmpty(dbpw) ||
-                string.IsNullOrEmpty(dbname))
+            var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_CONN");
+            if (string.IsNullOrEmpty(connectionString))
             {
                 throw new Exception("Database connection string is not correct.");
             }
-
-            var connectionString = $"Server={dbserver};port={port};user id={dbuser};password={dbpw};database={dbname}";
-
 
             services.AddDbContext<newsaggregatordataContext>(config => config.UseMySql(connectionString));
 
@@ -63,8 +60,6 @@ namespace News.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

@@ -7,16 +7,20 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["Services/NewsReader/NewsReader.API/NewsReader.API.csproj", "Services/NewsReader/NewsReader.API/"]
-RUN dotnet restore "Services/NewsReader/NewsReader.API/NewsReader.API.csproj"
+COPY ["Services/ResourceConfiguration/ResourceConfiguration.API/ResourceConfiguration.API.csproj", "Services/ResourceConfiguration/ResourceConfiguration.API/"]
+COPY ["Services/ResourceConfiguration/ResourceConfigurator.Shared/ResourceConfigurator.Shared.csproj", "Services/ResourceConfiguration/ResourceConfigurator.Shared/"]
+COPY ["Services/ResourceConfiguration/ResourceConfigurator.DataAccess/ResourceConfigurator.DataAccess.csproj", "Services/ResourceConfiguration/ResourceConfigurator.DataAccess/"]
+COPY ["Services/ResourceConfiguration/ResourceConfiguration.BackgroundJob/ResourceConfiguration.BackgroundJob.csproj", "Services/ResourceConfiguration/ResourceConfiguration.BackgroundJob/"]
+COPY ["Services/ResourceConfiguration/ResourceConfigurator.NetworkClient/ResourceConfigurator.NetworkClient.csproj", "Services/ResourceConfiguration/ResourceConfigurator.NetworkClient/"]
+RUN dotnet restore "Services/ResourceConfiguration/ResourceConfiguration.API/ResourceConfiguration.API.csproj"
 COPY . .
-WORKDIR "/src/Services/NewsReader/NewsReader.API"
-RUN dotnet build "NewsReader.API.csproj" -c Release -o /app/build
+WORKDIR "/src/Services/ResourceConfiguration/ResourceConfiguration.API"
+RUN dotnet build "ResourceConfiguration.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "NewsReader.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "ResourceConfiguration.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "NewsReader.API.dll"]
+ENTRYPOINT ["dotnet", "ResourceConfiguration.API.dll"]

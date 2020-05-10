@@ -13,14 +13,21 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using ResourceConfigurator.NetworkClient;
 using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
+using System.Collections;
 
 namespace ResourceConfiguration.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configroot)
         {
-            Configuration = configuration;
+            var configBuilder = new ConfigurationBuilder();
+
+            configBuilder.AddEnvironmentVariables();
+            configBuilder.SetBasePath(env.ContentRootPath)
+                            .AddJsonFile("appsettings.json");
+
+            Configuration = configBuilder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -48,23 +55,13 @@ namespace ResourceConfiguration.API
 
             services.AddSingleton<IGetResourceNetworkClient, GetResourceNetworkClient>();
 
-            var dbserver = Environment.GetEnvironmentVariable("dbserver");
-            var dbuser = Environment.GetEnvironmentVariable("dbuser");
-            var dbpw = Environment.GetEnvironmentVariable("dbpw");
-            var dbname = Environment.GetEnvironmentVariable("dbname");
-            var port = Environment.GetEnvironmentVariable("port");
+            // var connectionString = $"Server={dbserver};port={port};user id={dbuser};password={dbpw};database={dbname}";
+            var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_CONN");
 
-            if (string.IsNullOrEmpty(dbserver) ||
-                string.IsNullOrEmpty(dbuser) ||
-                string.IsNullOrEmpty(port) ||
-                string.IsNullOrEmpty(dbpw) ||
-                string.IsNullOrEmpty(dbname))
+            if (string.IsNullOrEmpty(connectionString))
             {
                 throw new Exception("Database connection string is not correct.");
             }
-
-            var connectionString = $"Server={dbserver};port={port};user id={dbuser};password={dbpw};database={dbname}";
-
 
             services.AddDbContext<newsaggregatorresourceContext>(config => config.UseMySql(connectionString));
 
@@ -79,7 +76,6 @@ namespace ResourceConfiguration.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
             app.UseCors("CorsPolicy");
             app.UseRouting();
 
