@@ -63,8 +63,5 @@ namespace News.API.BussinessLogic.GetArticle.PredicateBuild
                 return config.Build();
             }
         }
-
-
-
     }
 }

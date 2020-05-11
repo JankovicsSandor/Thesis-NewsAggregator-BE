@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace News.API.BussinessLogic.GetArticle.Command
 {
-    public class GetArticleCommand : IRequest<IQueryable<NewsResponse>>
+    public class GetArticleCommand : IRequest<ArticleListResponse>
     {
         public DateTime MinDate { get; set; }
         public DateTime MaxDate { get; set; }
