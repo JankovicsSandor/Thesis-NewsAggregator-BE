@@ -57,7 +57,7 @@ namespace News.API.BussinessLogic.GetArticle.PredicateBuild
                 }
                 if (model.MinDate != DateTime.MinValue)
                 {
-                    config.AddMinDate(model.MaxDate);
+                    config.AddMinDate(model.MinDate);
                 }
 
                 return config.Build();

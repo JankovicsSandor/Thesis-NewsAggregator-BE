@@ -27,7 +27,11 @@ namespace News.API.BussinessLogic.GetArticle.Handler
         public Task<ArticleListResponse> Handle(GetArticleCommand request, CancellationToken cancellationToken)
         {
             Expression<Func<Article, bool>> articleQuery = ArticlePredicateQueryBuilder.GetArticleQuery(request);
-            int skip = request.Page * _pageSize;
+            int skip = 0;
+            if (request.Page != 1)
+            {
+                skip = (request.Page - 1) * _pageSize;
+            }
             var list = (from article in _context.Article.Where(articleQuery)
                         join author in _context.Feed.Where(e => e.Active) on article.FeedId equals author.Id
                         orderby article.PublishDate descending
@@ -38,15 +42,17 @@ namespace News.API.BussinessLogic.GetArticle.Handler
                                 Picture = author.Picture
                             },
                             Picture = article.Picture,
+                            Link = article.Link,
                             PublishDate = article.PublishDate,
                             Description = article.Description,
                             Title = article.Title
                         });
+            int total = list.Count();
             list = list.Skip(skip).Take(_pageSize);
             var returnList = new ArticleListResponse()
             {
                 Result = list,
-                Total = list.Count()
+                Total = total
             };
             return Task.FromResult(returnList);
 
