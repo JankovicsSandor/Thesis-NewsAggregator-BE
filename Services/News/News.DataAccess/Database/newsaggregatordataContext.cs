@@ -20,11 +20,6 @@ namespace News.DataAccess.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;port=3308;user=admin;password=Genius1?;database=newsaggregatordata", x => x.ServerVersion("5.7.28-mysql"));
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
