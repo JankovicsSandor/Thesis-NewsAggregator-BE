@@ -28,6 +28,13 @@ namespace News.API.BussinessLogic.GetArticle.Handler
         {
             Expression<Func<Article, bool>> articleQuery = ArticlePredicateQueryBuilder.GetArticleQuery(request);
             int skip = 0;
+
+            //Set default value for the page. Everything below 2 is the first page
+            if (request.Page < 2)
+            {
+                request.Page = 1;
+            }
+
             if (request.Page != 1)
             {
                 skip = (request.Page - 1) * _pageSize;
