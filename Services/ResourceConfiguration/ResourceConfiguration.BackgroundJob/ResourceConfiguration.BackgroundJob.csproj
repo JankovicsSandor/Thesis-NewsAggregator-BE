@@ -14,5 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ResourceConfigurator.DataAccess\ResourceConfigurator.DataAccess.csproj" />
+    <ProjectReference Include="..\ResourceConfigurator.NetworkClient\ResourceConfigurator.NetworkClient.csproj" />
   </ItemGroup>
 </Project>

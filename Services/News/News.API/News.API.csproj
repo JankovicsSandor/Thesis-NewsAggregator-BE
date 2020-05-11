@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ResourceConfiguration\ResourceConfigurator.Shared\ResourceConfigurator.Shared.csproj" />
+    <ProjectReference Include="..\..\Shared\NewsAggregator.Shared\NewsAggregator.Shared.csproj" />
     <ProjectReference Include="..\News.DataAccess\News.DataAccess.csproj" />
     <ProjectReference Include="..\News.Shared\News.Shared.csproj" />
   </ItemGroup>

@@ -6,7 +6,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using News.API.BussinessLogic.AddNewResource.Command;
-using ResourceConfigurator.Shared.Event;
 
 namespace News.API.Controllers
 {

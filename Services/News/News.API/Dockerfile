@@ -8,6 +8,10 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["Services/News/News.API/News.API.csproj", "Services/News/News.API/"]
+COPY ["Services/ResourceConfiguration/ResourceConfigurator.Shared/ResourceConfigurator.Shared.csproj", "Services/ResourceConfiguration/ResourceConfigurator.Shared/"]
+COPY ["Services/Shared/NewsAggregator.Shared/NewsAggregator.Shared.csproj", "Services/Shared/NewsAggregator.Shared/"]
+COPY ["Services/News/News.Shared/News.Shared.csproj", "Services/News/News.Shared/"]
+COPY ["Services/News/News.DataAccess/News.DataAccess.csproj", "Services/News/News.DataAccess/"]
 RUN dotnet restore "Services/News/News.API/News.API.csproj"
 COPY . .
 WORKDIR "/src/Services/News/News.API"

@@ -24,9 +24,15 @@ namespace ResourceConfigurator.NetworkClient
             _client.BaseAddress = new Uri(url);
         }
 
-        public async Task AddNewArticleToData()
+        public async Task AddNewArticleToData(AddNewArticleEvent newItem)
         {
+            HttpResponseMessage response = await _client.PostAsync("api/article", new StringContent(JsonSerializer.Serialize(newItem), Encoding.UTF8, "application/json"));
 
+            string content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(content);
+            }
         }
 
         public async Task<int> AddNewResourceToData(AddNewResourceEvent newItem)

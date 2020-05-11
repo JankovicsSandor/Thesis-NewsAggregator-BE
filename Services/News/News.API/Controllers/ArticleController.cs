@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using News.API.BussinessLogic.AddNewArticle.Command;
+using News.API.BussinessLogic.GetArticle.Command;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,9 +23,10 @@ namespace News.API.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> GetArticles()
+        public async Task<IActionResult> GetArticles([FromQuery] GetArticleCommand command)
         {
-            return Ok("pong");
+
+            return Ok(await _meditor.Send(command));
         }
 
         [HttpPost("")]

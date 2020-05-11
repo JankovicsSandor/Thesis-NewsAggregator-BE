@@ -5,7 +5,7 @@ namespace ResourceConfigurator.NetworkClient
 {
     public interface IResourceToDataNetworkClient
     {
-        Task AddNewArticleToData();
+        Task AddNewArticleToData(AddNewArticleEvent newItem);
         Task<int> AddNewResourceToData(AddNewResourceEvent newItem);
     }
 }

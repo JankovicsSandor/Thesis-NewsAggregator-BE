@@ -37,6 +37,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.DataAccess", "Services
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "News.Shared", "Services\News\News.Shared\News.Shared.csproj", "{FF22C283-A2F3-4D2D-B6A0-01319659E20E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{C6FFF250-B970-447E-8FD9-6A0EDFDBC5DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsAggregator.Shared", "Services\Shared\NewsAggregator.Shared\NewsAggregator.Shared.csproj", "{E583A33A-C3D4-4EBC-A652-B975A69AD3DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,10 @@ Global
 		{FF22C283-A2F3-4D2D-B6A0-01319659E20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF22C283-A2F3-4D2D-B6A0-01319659E20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF22C283-A2F3-4D2D-B6A0-01319659E20E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E583A33A-C3D4-4EBC-A652-B975A69AD3DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E583A33A-C3D4-4EBC-A652-B975A69AD3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E583A33A-C3D4-4EBC-A652-B975A69AD3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E583A33A-C3D4-4EBC-A652-B975A69AD3DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +115,8 @@ Global
 		{815A78BB-580F-4A35-AC58-2BF95DEA5DAB} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
 		{A3BF8A8E-943B-4D1A-8F34-A7FBF944FC47} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
 		{FF22C283-A2F3-4D2D-B6A0-01319659E20E} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
+		{C6FFF250-B970-447E-8FD9-6A0EDFDBC5DB} = {3CCAFC46-C2CD-4072-9ACB-4A4C42CA9CD9}
+		{E583A33A-C3D4-4EBC-A652-B975A69AD3DD} = {C6FFF250-B970-447E-8FD9-6A0EDFDBC5DB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25E8E551-6190-435A-A26D-C5E8AD62C320}

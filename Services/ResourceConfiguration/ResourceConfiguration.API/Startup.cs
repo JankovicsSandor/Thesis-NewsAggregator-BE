@@ -14,6 +14,7 @@ using System;
 using ResourceConfigurator.NetworkClient;
 using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
 using System.Collections;
+using ResourceConfiguration.BackgroundJob.Worker;
 
 namespace ResourceConfiguration.API
 {
@@ -41,8 +42,22 @@ namespace ResourceConfiguration.API
             services.AddHttpClient<IResourceToDataNetworkClient, ResourceToDataNetworkClient>();
 
             services.AddTransient<IFeedReader, FeedReader>();
+            services.AddTransient<IResourceDownloader, ResourceDownloader>();
 
-            services.AddHostedService<ResourceScraper>();
+            var hostedServiceActive = Environment.GetEnvironmentVariable("APPSETTING_WORKER_ACTIVE");
+            Console.WriteLine($"Active value: {hostedServiceActive}");
+
+            bool value = false;
+            if (hostedServiceActive == bool.TrueString)
+            {
+                value = true;
+            }
+
+            if (value)
+            {
+                services.AddHostedService<ResourceScraper>();
+            }
+
 
 
             // Add Cors

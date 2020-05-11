@@ -13,7 +13,7 @@ namespace ResourceConfigurator.DataAccess.Database
         public int Id { get; set; }
         public string Url { get; set; }
         public bool? Active { get; set; }
-        public int FeedId { get; set; }
+        public int? FeedId { get; set; }
 
         public virtual ICollection<Lastsynchronizedresource> Lastsynchronizedresource { get; set; }
     }

@@ -13,13 +13,8 @@
       "commandName": "IISExpress",
       "launchUrl": "weatherforecast",
       "environmentVariables": {
-        "dbname": "newsaggregatordata",
-        "Key": "newsaggregatordata",
-        "dbserver": "localhost",
-        "port": "3308",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "dbpw": "Genius1?",
-        "dbuser": "admin"
+        "MYSQLCONNSTR_CONN": "server=localhost;port=3308;user=admin;password=Genius1?;database=newsaggregatordata",
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "News.API": {

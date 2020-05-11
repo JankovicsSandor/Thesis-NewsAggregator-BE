@@ -49,6 +49,14 @@ namespace News.API
                 throw new Exception("Database connection string is not correct.");
             }
 
+            // Add Cors
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddDbContext<newsaggregatordataContext>(config => config.UseMySql(connectionString));
 
         }
@@ -62,6 +70,8 @@ namespace News.API
             }
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 

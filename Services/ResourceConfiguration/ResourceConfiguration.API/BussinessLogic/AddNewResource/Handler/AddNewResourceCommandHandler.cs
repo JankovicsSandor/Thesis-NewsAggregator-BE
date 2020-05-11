@@ -30,11 +30,11 @@ namespace ResourceConfiguration.API.BussinessLogic.AddNewResource.Handler
 
         public async Task<Unit> Handle(AddNewResourceCommand request, CancellationToken cancellationToken)
         {
-            string feedPicture = _reader.GetResourceProfilePicture(request.Uri);
+            string feedPicture = _reader.GetResourceProfilePicture(request.Url);
             int feedId = await _eventClient.AddNewResourceToData(new AddNewResourceEvent() { ResourceName = request.Name, PictureUrl = feedPicture });
             _database.Resource.Add(new Resource()
             {
-                Url = request.Uri,
+                Url = request.Url,
                 Active = true,
                 FeedId = feedId
             });

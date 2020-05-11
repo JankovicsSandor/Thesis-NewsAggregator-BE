@@ -13,13 +13,11 @@
       "commandName": "IISExpress",
       "launchUrl": "weatherforecast",
       "environmentVariables": {
-        "dbname": "newsaggregatorresource",
-        "DATA_URL": "https://localhost:44306/",
-        "dbserver": "localhost",
-        "port": "3308",
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "dbpw": "Genius1?",
-        "dbuser": "admin"
+        "MYSQLCONNSTR_CONN": "server=localhost;port=3308;user=admin;password=Genius1?;database=newsaggregatorresource",
+        "APPSETTING_WORKER_ACTIVE": "True",
+        "APPSETTING_DATA_URL": "https://localhost:44306",
+        "APPSETTING_BACKGROUND_DELAY_SEC": "100",
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "NewsReader.API": {
