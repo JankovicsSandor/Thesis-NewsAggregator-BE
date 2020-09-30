@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  resourceconfiguration.api:
+    image: ${DOCKER_REGISTRY-}resourceconfigurationapi
+    build:
+      context: .
+      dockerfile: Services/ResourceConfiguration/ResourceConfiguration.API/Dockerfile
+
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: Services/User/User.API/Dockerfile
+
+
+  news.api:
+    image: ${DOCKER_REGISTRY-}newsapi
+    build:
+      context: .
+      dockerfile: Services/News/News.API/Dockerfile
+
