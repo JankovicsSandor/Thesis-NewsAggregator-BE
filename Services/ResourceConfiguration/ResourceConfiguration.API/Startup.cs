@@ -22,16 +22,12 @@ namespace ResourceConfiguration.API
     {
         public Startup(IWebHostEnvironment env, IConfiguration configroot)
         {
-            var configBuilder = new ConfigurationBuilder();
-
-            configBuilder.AddEnvironmentVariables();
-            configBuilder.SetBasePath(env.ContentRootPath)
-                            .AddJsonFile("appsettings.json");
-
-            Configuration = configBuilder.Build();
+            Configuration = configroot;
+            WebhostEnv = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment WebhostEnv { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -71,7 +67,7 @@ namespace ResourceConfiguration.API
             services.AddSingleton<IGetResourceNetworkClient, GetResourceNetworkClient>();
 
             // var connectionString = $"Server={dbserver};port={port};user id={dbuser};password={dbpw};database={dbname}";
-            var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_CONN");
+            var connectionString = Configuration.GetSection("MYSQLCONNSTR_CONN").Value;
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -84,9 +80,9 @@ namespace ResourceConfiguration.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (WebhostEnv.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

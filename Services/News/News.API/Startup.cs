@@ -21,18 +21,15 @@ namespace News.API
 {
     public class Startup
     {
+        public IWebHostEnvironment WebhostEnv { get; }
+        public IConfiguration Configuration { get; }
+
+
         public Startup(IWebHostEnvironment env, IConfiguration configroot)
         {
-            var configBuilder = new ConfigurationBuilder();
-
-            configBuilder.AddEnvironmentVariables();
-            configBuilder.SetBasePath(env.ContentRootPath)
-                            .AddJsonFile("appsettings.json");
-
-            Configuration = configBuilder.Build();
+            WebhostEnv = env;
+            Configuration = configroot;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -43,7 +40,7 @@ namespace News.API
 
             services.AddControllers();
 
-            var connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_CONN");
+            var connectionString = Configuration.GetSection("MYSQLCONNSTR_CONN").Value;
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new Exception("Database connection string is not correct.");
@@ -62,9 +59,9 @@ namespace News.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (WebhostEnv.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
