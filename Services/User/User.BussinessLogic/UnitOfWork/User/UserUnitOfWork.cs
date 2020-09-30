@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using User.BussinessLogic.UnitOfWork.Password;
+using User.Shared.Models.Input;
+using User.Shared.Models.Output;
 
 namespace User.BussinessLogic.UnitOfWork.User
 {
@@ -14,6 +16,9 @@ namespace User.BussinessLogic.UnitOfWork.User
             _passwordLogic = passwordLogic;
         }
 
-        public void CreateNewUser()
+        public UserCreateResponse CreateNewUser(CreateNewUserInputModel newUser)
+        {
+            return null;
+        }
     }
 }
