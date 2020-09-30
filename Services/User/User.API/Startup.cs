@@ -1,4 +1,5 @@
 using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,8 @@ namespace User.API
             {
                 throw new Exception("Database connection string is not correct.");
             }
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddDbContext<UserContext>(config => config.UseMySql(connectionString));
             services.AddControllers();

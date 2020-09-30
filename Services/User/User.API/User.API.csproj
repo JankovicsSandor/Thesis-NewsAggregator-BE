@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
   </ItemGroup>
 
@@ -16,6 +18,10 @@
     <ProjectReference Include="..\..\..\User.Data\User.Data.csproj" />
     <ProjectReference Include="..\User.BussinessLogic\User.BussinessLogic.csproj" />
     <ProjectReference Include="..\User.DataAccess\User.DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AutoMapper\" />
   </ItemGroup>
 
 
