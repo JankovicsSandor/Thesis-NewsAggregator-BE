@@ -15,7 +15,7 @@ namespace User.Data.Database
         {
         }
 
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<ApplicationUser> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,7 +24,7 @@ namespace User.Data.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable("user");
 

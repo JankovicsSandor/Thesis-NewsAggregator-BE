@@ -10,7 +10,7 @@ namespace User.BussinessLogic.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<CreateNewUserInputModel, User.Data.Database.User>();
+            CreateMap<CreateNewUserInputModel, User.Data.Database.ApplicationUser>();
         }
     }
 }

@@ -6,7 +6,7 @@ using User.Data.Database;
 
 namespace User.DataAccess.UserAcccess
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private UserContext _context;
 
@@ -20,7 +20,7 @@ namespace User.DataAccess.UserAcccess
             return _context.User.Any(e => e.Username == userName);
         }
 
-        public User.Data.Database.User CreateNewUser(User.Data.Database.User newUser)
+        public User.Data.Database.ApplicationUser CreateNewUser(User.Data.Database.ApplicationUser newUser)
         {
             _context.User.Add(newUser);
             _context.SaveChanges();
