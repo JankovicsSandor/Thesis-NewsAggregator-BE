@@ -1,13 +1,12 @@
 #!flask/bin/python
-from flask import Flask,jsonify,abort
-from flask import request
+from flask import Flask,jsonify,abort,request
 from textToId import TextToId
 from database import DatabaseConnection
 
 app = Flask(__name__)
 PREFIX = "/api/similarity"
-#database=DatabaseConnection()
-#databaseSession=database.getDatabaseConnection()
+database=DatabaseConnection()
+databaseSession=database.getDatabaseConnection()
 
 @app.route(PREFIX+'/')
 def index():
@@ -22,10 +21,10 @@ def getMostSimilarArticles():
     return jsonify({'id':convertedId}),201
 
 
-#@app.teardown_request
-#def checkin_db(exc):
-    #if databaseSession:
-    #    database.closeConnection()
+@app.teardown_request
+def checkin_db(exc):
+    if databaseSession:
+        database.closeConnection()
     
 if __name__ == '__main__':
     app.run()
