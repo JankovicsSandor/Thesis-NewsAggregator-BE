@@ -1,6 +1,17 @@
 version: '3.4'
 
 services:
+  mongoDatabase:
+    restart: always
+    container_name: mongoDb
+    image: mongo:latest
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: rootPassword
+    volumes:
+       - ./mongoDatabase:/data/db
+    ports:
+      - "27017:27017"
   database:
     restart: always
     container_name: database
@@ -32,3 +43,13 @@ services:
     build:
       context: .
       dockerfile: Services/News/News.API/Dockerfile
+  collector.api:
+    image: ${DOCKER_REGISTRY-}collectorapi
+    environment:
+        DATABASE_HOST:"127.0.0.1"
+        DATABASE_USER:"root"
+        DATABASE_PASSWORD:"admin"
+        DATABASE_NAME:"news_aggregator_data"
+    build:
+      context: .
+      dockerfile: Services/NewsSimilarity/Dockerfile
