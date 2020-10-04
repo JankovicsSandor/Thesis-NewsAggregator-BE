@@ -22,6 +22,8 @@ services:
        - ./Database:/var/lib/mysql
     ports:
       - "4000:3306"
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
   resourceconfiguration.api:
     image: ${DOCKER_REGISTRY-}resourceconfigurationapi
     environment:
@@ -29,6 +31,8 @@ services:
     build:
       context: .
       dockerfile: Services/ResourceConfiguration/ResourceConfiguration.API/Dockerfile
+    depends_on:
+        - mysql
   user.api:
     image: ${DOCKER_REGISTRY-}userapi
     environment:
@@ -36,6 +40,8 @@ services:
     build:
       context: .
       dockerfile: Services/User/User.API/Dockerfile
+    depends_on:
+        - mysql
   news.api:
     image: ${DOCKER_REGISTRY-}newsapi
     environment:
@@ -43,6 +49,8 @@ services:
     build:
       context: .
       dockerfile: Services/News/News.API/Dockerfile
+    depends_on:
+      - mysql
   collector.api:
     image: ${DOCKER_REGISTRY-}collectorapi
     environment:
@@ -53,3 +61,5 @@ services:
     build:
       context: .
       dockerfile: Services/NewsSimilarity/Dockerfile
+    depends_on:
+        - mysql
