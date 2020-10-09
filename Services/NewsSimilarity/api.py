@@ -20,6 +20,8 @@ def getMostSimilarArticles():
     convertedId=converter.createIdFromText(request.json['summary'])
     return jsonify({'id':convertedId}),201
 
+def newMessage(ch, method, properties, body):
+      print(" [x] %r" % body)
 
 @app.teardown_request
 def checkin_db(exc):
