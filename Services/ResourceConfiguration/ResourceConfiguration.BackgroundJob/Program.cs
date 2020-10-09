@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ResourceConfiguration.BackgroundJob.EventBus;
 
 namespace ResourceConfiguration.BackgroundJob
 {
@@ -18,6 +15,8 @@ namespace ResourceConfiguration.BackgroundJob
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddEventBus(hostContext.Configuration);
+
                     services.AddHostedService<ResourceScraper>();
                 });
     }
