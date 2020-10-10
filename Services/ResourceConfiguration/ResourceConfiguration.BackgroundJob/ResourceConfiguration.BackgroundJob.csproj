@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuilldingBlocks\EventBus\EventBusBase\EventBusBase.csproj" />
+    <ProjectReference Include="..\..\..\BuilldingBlocks\EventBus\EventBusRabbitMq\EventBusRabbitMQ.csproj" />
     <ProjectReference Include="..\ResourceConfigurator.DataAccess\ResourceConfigurator.DataAccess.csproj" />
     <ProjectReference Include="..\ResourceConfigurator.NetworkClient\ResourceConfigurator.NetworkClient.csproj" />
   </ItemGroup>

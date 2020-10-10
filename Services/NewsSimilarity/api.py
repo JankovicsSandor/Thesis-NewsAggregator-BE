@@ -2,11 +2,13 @@
 from flask import Flask,jsonify,abort,request
 from textToId import TextToId
 from database import DatabaseConnection
+from message import RabbitMqConnectionManager
 
 app = Flask(__name__)
 PREFIX = "/api/similarity"
 database=DatabaseConnection()
-databaseSession=database.getDatabaseConnection()
+databaseSession = database.getDatabaseConnection()
+eventBroker=RabbitMqConnectionManager()
 
 @app.route(PREFIX+'/')
 def index():
@@ -30,3 +32,4 @@ def checkin_db(exc):
     
 if __name__ == '__main__':
     app.run()
+    eventBroker.registerToEvent('news_aggregator_bus',newMessage)
