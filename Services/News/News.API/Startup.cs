@@ -40,7 +40,7 @@ namespace News.API
 
             services.AddControllers();
 
-            var connectionString = Configuration.GetSection("MYSQLCONNSTR_CONN").Value;
+            var connectionString = Configuration.GetSection("MYSQLCONNSTR").Value;
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new Exception("Database connection string is not correct.");

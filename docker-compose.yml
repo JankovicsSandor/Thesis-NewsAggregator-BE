@@ -6,37 +6,40 @@ services:
     container_name: mongoDb
     image: mongo:latest
     environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: rootPassword
+       - MONGO_INITDB_ROOT_USERNAME=root
+       - MONGO_INITDB_ROOT_PASSWORD=rootPassword
     volumes:
        - ./mongoDatabase:/data/db
     ports:
-      - "27017:27017"
-  database:
+       - "27017:27017"
+  mysql:
     restart: always
-    container_name: database
     image: mysql:latest
     environment:
-        MYSQL_ROOT_PASSWORD: admin
+       - MYSQL_ROOT_PASSWORD=admin
     volumes:
-       - ./Database:/var/lib/mysql
+      - ./Database:/var/lib/mysql
     ports:
       - "4000:3306"
   rabbitmq:
     image: rabbitmq:3-management-alpine
+    ports:
+      - "8080:15672"
   resourceconfiguration.api:
     image: ${DOCKER_REGISTRY-}resourceconfigurationapi
     environment:
-        MYSQLCONNSTR_CONN:"Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_resource;"
+        - MYSQLCONNSTR=Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_resource;
     build:
       context: .
       dockerfile: Services/ResourceConfiguration/ResourceConfiguration.API/Dockerfile
     depends_on:
         - mysql
+    ports:
+      - "10000:80"
   user.api:
     image: ${DOCKER_REGISTRY-}userapi
     environment:
-        MYSQLCONNSTR_CONN:"Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_user;"
+        - MYSQLCONNSTR=Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_user;
     build:
       context: .
       dockerfile: Services/User/User.API/Dockerfile
@@ -45,7 +48,7 @@ services:
   news.api:
     image: ${DOCKER_REGISTRY-}newsapi
     environment:
-        MYSQLCONNSTR_CONN:"Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_data;"
+        - MYSQLCONNSTR=Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_data;
     build:
       context: .
       dockerfile: Services/News/News.API/Dockerfile
@@ -54,12 +57,12 @@ services:
   collector.api:
     image: ${DOCKER_REGISTRY-}collectorapi
     environment:
-        DATABASE_HOST:"127.0.0.1"
-        DATABASE_USER:"root"
-        DATABASE_PASSWORD:"admin"
-        DATABASE_NAME:"news_aggregator_data"
+        - DATABASE_HOST=127.0.0.1
+        - DATABASE_USER=root
+        - DATABASE_PASSWORD=admin
+        - DATABASE_NAME=news_aggregator_data
     build:
-      context: .
-      dockerfile: Services/NewsSimilarity/Dockerfile
+      context: ./Services/NewsSimilarity/
+      dockerfile: ./Dockerfile
     depends_on:
         - mysql

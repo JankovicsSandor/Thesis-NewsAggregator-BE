@@ -40,11 +40,11 @@ namespace ResourceConfiguration.API
             services.AddTransient<IFeedReader, FeedReader>();
             services.AddTransient<IResourceDownloader, ResourceDownloader>();
 
-            var hostedServiceActive = Environment.GetEnvironmentVariable("APPSETTING_WORKER_ACTIVE");
+            var hostedServiceActive = Configuration.GetSection("WorkerServiceActive").Value;
             Console.WriteLine($"Active value: {hostedServiceActive}");
 
             bool value = false;
-            if (hostedServiceActive == bool.TrueString)
+            if (hostedServiceActive.Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase))
             {
                 value = true;
             }
@@ -67,7 +67,7 @@ namespace ResourceConfiguration.API
             services.AddSingleton<IGetResourceNetworkClient, GetResourceNetworkClient>();
 
             // var connectionString = $"Server={dbserver};port={port};user id={dbuser};password={dbpw};database={dbname}";
-            var connectionString = Configuration.GetSection("MYSQLCONNSTR_CONN").Value;
+            var connectionString = Configuration.GetSection("MYSQLCONNSTR").Value;
 
             if (string.IsNullOrEmpty(connectionString))
             {
