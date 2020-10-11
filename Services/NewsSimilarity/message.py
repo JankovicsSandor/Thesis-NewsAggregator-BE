@@ -11,7 +11,7 @@ class RabbitMqConnectionManager(object):
         channel.exchange_declare(exchange='eventName', exchange_type='fanout')
         result = channel.queue_declare(queue='', exclusive=True)
         queue_name = result.method.queue
-        channel.queue_bind(exchange='eventName', queue=queue_name)
+        channel.queue_bind(exchange=eventName, queue=queue_name)
         print(' [*] Waiting for messages. To exit press CTRL+C')
 
         channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)     

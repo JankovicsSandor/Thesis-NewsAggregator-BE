@@ -1,8 +1,9 @@
 ﻿using Autofac;
-using EventBusBase;
-using EventBusBase.Abstractions;
-using EventBusBase.Events;
-using EventBusBase.Extensions;
+using EventBusRabbitMQ;
+using EventBusRabbitMQ.Abstractions;
+using EventBusRabbitMQ.Events;
+using EventBusRabbitMQ.Extensions;
+using EventBusRabbitMQ.Abstractions;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
@@ -27,7 +28,7 @@ namespace EventBusRabbitMQ
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly ILifetimeScope _autofac;
-        private readonly string AUTOFAC_SCOPE_NAME = "eshop_event_bus";
+        private readonly string AUTOFAC_SCOPE_NAME = "news_aggregator_bus";
         private readonly int _retryCount;
 
         private IModel _consumerChannel;
@@ -90,7 +91,7 @@ namespace EventBusRabbitMQ
 
                 _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
 
-                channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct");
+                channel.ExchangeDeclare(exchange: BROKER_NAME, type: "fanout");
 
                 var message = JsonSerializer.Serialize(@event);
                 var body = Encoding.UTF8.GetBytes(message);

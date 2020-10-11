@@ -61,6 +61,7 @@ namespace ResourceConfiguration.BackgroundJob.Worker
                         lastSource.Description = item.Description;
                         _databasecontext.Update(lastSource);
                         _databasecontext.SaveChanges();
+                        // TODO add integration event and pubish to hub
                     }
                     catch (Exception e)
                     {

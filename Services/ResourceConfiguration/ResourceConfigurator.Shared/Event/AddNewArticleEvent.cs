@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using EventBusRabbitMQ.Events;
+using System;
 
 namespace ResourceConfigurator.Shared.Event
 {
-    public class AddNewArticleEvent
+    public class AddNewArticleEvent: IntegrationEvent
     {
         public int FeedId { get; set; }
         public string Title { get; set; }

@@ -10,8 +10,10 @@
 *.userosscache
 *.sln.docstates
 
-#Database files
+#Persistent volume files
 Database/
+rabbitMq/
+mongoDatabase/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -1,18 +1,17 @@
-FROM python:3.7-alpine as base
+FROM python:3.8-alpine as base
 
 FROM base as builder
-
 
 RUN mkdir /install
 WORKDIR /install
 
-COPY requirements.txt /requirements.txt
+COPY requirements.txt .
 
 
-RUN pip install -r /requirements.txt --target .
+RUN pip install -r requirements.txt
 
 FROM base
-COPY --from=builder /install /usr/local/lib/python3.7/site-packages
+COPY --from=builder /install /usr/local/lib/python3.8/site-packages
 
 WORKDIR /app
 COPY . /app

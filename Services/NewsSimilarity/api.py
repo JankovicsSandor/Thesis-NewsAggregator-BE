@@ -29,7 +29,10 @@ def newMessage(ch, method, properties, body):
 def checkin_db(exc):
     if databaseSession:
         database.closeConnection()
+    if eventBroker:
+        eventBroker.closeConnection()
+
     
 if __name__ == '__main__':
     app.run()
-    eventBroker.registerToEvent('news_aggregator_bus',newMessage)
+    eventBroker.registerToEvent('AddNewArticleEvent',newMessage)
