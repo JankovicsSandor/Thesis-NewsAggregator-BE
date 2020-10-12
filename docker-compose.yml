@@ -3,7 +3,6 @@ version: '3.4'
 services:
   mongoDatabase:
     restart: always
-    container_name: mongoDb
     image: mongo:latest
     environment:
        - MONGO_INITDB_ROOT_USERNAME=root
@@ -20,49 +19,81 @@ services:
     volumes:
       - ./Database:/var/lib/mysql
     ports:
-      - "4000:3306"
+      - "3306:3306"
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
+      - '5672:5672'
       - "8080:15672"
+    environment:
+        - RABBITMQ_DEFAULT_USER=admin
+        - RABBITMQ_DEFAULT_PASS=adminPw
+    volumes:
+      - ./rabbitMq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.config
   resourceconfiguration.api:
     image: ${DOCKER_REGISTRY-}resourceconfigurationapi
     environment:
         - MYSQLCONNSTR=Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_resource;
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+        - RABBITMQ_HOST=rabbitmq
+        - RABBITMQ_USER=admin
+        - RABBITMQ_PASS=adminPw
+        - RABBITMQ_RETRY=5
     build:
       context: .
       dockerfile: Services/ResourceConfiguration/ResourceConfiguration.API/Dockerfile
     depends_on:
-        - mysql
+      - mysql
+    links:
+        - rabbitmq
     ports:
-      - "10000:80"
+      - "10000:443"
+    volumes:
+      - ./ssl/webserver.pfx:/https/webserver.pfx
   user.api:
     image: ${DOCKER_REGISTRY-}userapi
     environment:
         - MYSQLCONNSTR=Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_user;
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
     build:
       context: .
       dockerfile: Services/User/User.API/Dockerfile
+    ports:
+      - "10005:443"
     depends_on:
         - mysql
+    volumes:
+       - ./ssl/webserver.pfx:/https/webserver.pfx
   news.api:
     image: ${DOCKER_REGISTRY-}newsapi
     environment:
         - MYSQLCONNSTR=Server=127.0.0.1;user id=root;password=admin;database=news_aggregator_data;
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
     build:
       context: .
       dockerfile: Services/News/News.API/Dockerfile
+    volumes:
+       - ./ssl/webserver.pfx:/https/webserver.pfx
+    ports:
+      - "10010:443"
     depends_on:
       - mysql
   collector.api:
     image: ${DOCKER_REGISTRY-}collectorapi
     environment:
-        - DATABASE_HOST=127.0.0.1
+        - DATABASE_HOST=mysql
         - DATABASE_USER=root
         - DATABASE_PASSWORD=admin
         - DATABASE_NAME=news_aggregator_data
     build:
       context: ./Services/NewsSimilarity/
       dockerfile: ./Dockerfile
+    links:
+        - mysql
     depends_on:
         - mysql
+    ports:
+      - "10015:5000"

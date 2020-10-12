@@ -7,8 +7,7 @@ WORKDIR /install
 
 COPY requirements.txt .
 
-
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --target .
 
 FROM base
 COPY --from=builder /install /usr/local/lib/python3.8/site-packages

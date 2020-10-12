@@ -9,7 +9,7 @@ class DatabaseConnection(object):
     def getDatabaseConnection(self):
         try:
             connection = mysql.connector.connect(host=os.environ['DATABASE_HOST'],user=os.environ['DATABASE_USER'],
-                                        password=os.environ['DATABASE_PASSWORD'], database=os.environ['DATABASE_NAME'])
+                                        password=os.environ['DATABASE_PASSWORD'], database=os.environ['DATABASE_NAME'],auth_plugin='mysql_native_password')
             return connection
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:

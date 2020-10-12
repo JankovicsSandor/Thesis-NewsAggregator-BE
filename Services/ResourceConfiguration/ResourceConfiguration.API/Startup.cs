@@ -15,6 +15,7 @@ using ResourceConfigurator.NetworkClient;
 using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
 using System.Collections;
 using ResourceConfiguration.BackgroundJob.Worker;
+using ResourceConfiguration.BackgroundJob.EventBus;
 
 namespace ResourceConfiguration.API
 {
@@ -39,6 +40,10 @@ namespace ResourceConfiguration.API
 
             services.AddTransient<IFeedReader, FeedReader>();
             services.AddTransient<IResourceDownloader, ResourceDownloader>();
+
+            // TODO remove this line
+            services.AddEventBus(Configuration);
+            services.AddIntegrationServices(Configuration);
 
             var hostedServiceActive = Configuration.GetSection("WorkerServiceActive").Value;
             Console.WriteLine($"Active value: {hostedServiceActive}");

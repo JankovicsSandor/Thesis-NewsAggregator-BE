@@ -15,6 +15,9 @@ Database/
 rabbitMq/
 mongoDatabase/
 
+#ssl certificate
+ssl/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

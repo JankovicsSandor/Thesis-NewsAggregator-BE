@@ -17,13 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\User.BussinessLogic\User.BussinessLogic.csproj" />
     <ProjectReference Include="..\User.DataAccess\User.DataAccess.csproj" />
-    <ProjectReference Include="..\User.Data\User.Data.csproj" />
     <ProjectReference Include="..\User.Shared\User.Shared.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AutoMapper\" />
-  </ItemGroup>
-
 
 </Project>
