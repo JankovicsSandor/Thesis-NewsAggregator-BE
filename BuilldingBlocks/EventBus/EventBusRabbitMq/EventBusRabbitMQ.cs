@@ -1,22 +1,18 @@
-﻿using Autofac;
-using EventBusRabbitMQ;
-using EventBusRabbitMQ.Abstractions;
+﻿using EventBusRabbitMQ.Abstractions;
 using EventBusRabbitMQ.Events;
 using EventBusRabbitMQ.Extensions;
-using EventBusRabbitMQ.Abstractions;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
-using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace EventBusRabbitMQ
 {
@@ -27,23 +23,20 @@ namespace EventBusRabbitMQ
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
-        private readonly ILifetimeScope _autofac;
-        private readonly string AUTOFAC_SCOPE_NAME = "news_aggregator_bus";
         private readonly int _retryCount;
-
+        private readonly ServiceProvider _serviceProvider;
         private IModel _consumerChannel;
         private string _queueName;
 
-        public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, ILogger<EventBusRabbitMQ> logger,
-            ILifetimeScope autofac, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+        public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, IServiceCollection services, ILogger<EventBusRabbitMQ> logger, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _queueName = queueName;
             _consumerChannel = CreateConsumerChannel();
-            _autofac = autofac;
             _retryCount = retryCount;
+            _serviceProvider = services.BuildServiceProvider();
             _subsManager.OnEventRemoved += SubsManager_OnEventRemoved;
         }
 
@@ -113,16 +106,6 @@ namespace EventBusRabbitMQ
             }
         }
 
-        public void SubscribeDynamic<TH>(string eventName)
-            where TH : IDynamicIntegrationEventHandler
-        {
-            _logger.LogInformation("Subscribing to dynamic event {EventName} with {EventHandler}", eventName, typeof(TH).GetGenericTypeName());
-
-            DoInternalSubscription(eventName);
-            _subsManager.AddDynamicSubscription<TH>(eventName);
-            StartBasicConsume();
-        }
-
         public void Subscribe<T, TH>()
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
@@ -164,12 +147,6 @@ namespace EventBusRabbitMQ
             _logger.LogInformation("Unsubscribing from event {EventName}", eventName);
 
             _subsManager.RemoveSubscription<T, TH>();
-        }
-
-        public void UnsubscribeDynamic<TH>(string eventName)
-            where TH : IDynamicIntegrationEventHandler
-        {
-            _subsManager.RemoveDynamicSubscription<TH>(eventName);
         }
 
         public void Dispose()
@@ -266,33 +243,22 @@ namespace EventBusRabbitMQ
 
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
-                using (var scope = _autofac.BeginLifetimeScope(AUTOFAC_SCOPE_NAME))
+
+                var subscriptions = _subsManager.GetHandlersForEvent(eventName);
+                foreach (var subscription in subscriptions)
                 {
-                    var subscriptions = _subsManager.GetHandlersForEvent(eventName);
-                    foreach (var subscription in subscriptions)
-                    {
-                        if (subscription.IsDynamic)
-                        {
-                            var handler = scope.ResolveOptional(subscription.HandlerType) as IDynamicIntegrationEventHandler;
-                            if (handler == null) continue;
-                            dynamic eventData = JsonSerializer.Deserialize<dynamic>(message);
 
-                            await Task.Yield();
-                            await handler.Handle(eventData);
-                        }
-                        else
-                        {
-                            var handler = scope.ResolveOptional(subscription.HandlerType);
-                            if (handler == null) continue;
-                            var eventType = _subsManager.GetEventTypeByName(eventName);
-                            var integrationEvent = JsonSerializer.Deserialize(message, eventType);
-                            var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+                    var handler = _serviceProvider.GetService(subscription.HandlerType);
+                    if (handler == null) continue;
+                    var eventType = _subsManager.GetEventTypeByName(eventName);
+                    var integrationEvent = JsonSerializer.Deserialize(message, eventType);
+                    var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
 
-                            await Task.Yield();
-                            await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
-                        }
-                    }
+                    await Task.Yield();
+                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
+
                 }
+
             }
             else
             {
