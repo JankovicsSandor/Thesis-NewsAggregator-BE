@@ -21,7 +21,6 @@ namespace ResourceConfiguration.BackgroundJob.EventBus
             services.AddSingleton<IEventBus, EventBusRabbitMQ.EventBusRabbitMQ>(sp =>
             {
                 var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
                 var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ.EventBusRabbitMQ>>();
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
@@ -31,7 +30,7 @@ namespace ResourceConfiguration.BackgroundJob.EventBus
                     retryCount = int.Parse(configuration["EventBusRetryCount"]);
                 }
 
-                return new EventBusRabbitMQ.EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                return new EventBusRabbitMQ.EventBusRabbitMQ(rabbitMQPersistentConnection, services, logger, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
             });
 
 
@@ -48,24 +47,24 @@ namespace ResourceConfiguration.BackgroundJob.EventBus
 
                 var factory = new ConnectionFactory()
                 {
-                    HostName = configuration["EventBusConnection"],
+                    HostName = configuration["RABBITMQ_HOST"],
                     DispatchConsumersAsync = true
                 };
 
-                if (!string.IsNullOrEmpty(configuration["EventBusUserName"]))
-                {
-                    factory.UserName = configuration["EventBusUserName"];
-                }
+                 if (!string.IsNullOrEmpty(configuration["RABBITMQ_USER"]))
+                 {
+                     factory.UserName = configuration["RABBITMQ_USER"];
+                 }
 
-                if (!string.IsNullOrEmpty(configuration["EventBusPassword"]))
-                {
-                    factory.Password = configuration["EventBusPassword"];
-                }
-
+                 if (!string.IsNullOrEmpty(configuration["RABBITMQ_PASS"]))
+                 {
+                     factory.Password = configuration["RABBITMQ_PASS"];
+                 }
+                
                 var retryCount = 5;
-                if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
+                if (!string.IsNullOrEmpty(configuration["RABBITMQ_RETRY"]))
                 {
-                    retryCount = int.Parse(configuration["EventBusRetryCount"]);
+                    retryCount = int.Parse(configuration["RABBITMQ_RETRY"]);
                 }
 
                 return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
