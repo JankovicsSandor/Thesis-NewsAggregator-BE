@@ -25,9 +25,9 @@ namespace ResourceConfiguration.BackgroundJob.EventBus
                 var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
                 var retryCount = 5;
-                if (!string.IsNullOrEmpty(configuration["EventBusRetryCount"]))
+                if (!string.IsNullOrEmpty(configuration["RABBITMQ_RETRY"]))
                 {
-                    retryCount = int.Parse(configuration["EventBusRetryCount"]);
+                    retryCount = int.Parse(configuration["RABBITMQ_RETRY"]);
                 }
 
                 return new EventBusRabbitMQ.EventBusRabbitMQ(rabbitMQPersistentConnection, services, logger, eventBusSubcriptionsManager, subscriptionClientName, retryCount);

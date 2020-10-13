@@ -1,15 +1,11 @@
 #!flask/bin/python
 from flask import Flask,jsonify,abort,request
 from textToId import TextToId
-from database import DatabaseConnection
 from message import RabbitMqConnectionManager
 
 app = Flask(__name__)
 PREFIX = "/api/similarity"
-database=DatabaseConnection()
-databaseSession = database.getDatabaseConnection()
 eventBroker=RabbitMqConnectionManager()
-
 @app.route(PREFIX+'/')
 def index():
     return "Hello, World!"
@@ -27,12 +23,11 @@ def newMessage(ch, method, properties, body):
 
 @app.teardown_request
 def checkin_db(exc):
-    if databaseSession:
-        database.closeConnection()
     if eventBroker:
         eventBroker.closeConnection()
 
-    
+eventBroker.registerToEvent('AddNewArticleEvent', newMessage)  
 if __name__ == '__main__':
     app.run()
-    eventBroker.registerToEvent('AddNewArticleEvent',newMessage)
+
+

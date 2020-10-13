@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,14 +13,17 @@ namespace EventBusRabbitMQ.Events
             CreationDate = DateTime.UtcNow;
         }
 
+        [JsonConstructor]
         public IntegrationEvent(Guid id, DateTime createDate)
         {
             Id = id;
             CreationDate = createDate;
         }
 
+        [JsonProperty]
         public Guid Id { get; private set; }
 
+        [JsonProperty]
         public DateTime CreationDate { get; private set; }
     }
 }

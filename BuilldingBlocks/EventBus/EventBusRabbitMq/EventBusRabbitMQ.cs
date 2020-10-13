@@ -9,10 +9,10 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Newtonsoft.Json;
 
 namespace EventBusRabbitMQ
 {
@@ -84,9 +84,9 @@ namespace EventBusRabbitMQ
 
                 _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
 
-                channel.ExchangeDeclare(exchange: BROKER_NAME, type: "fanout");
+                channel.ExchangeDeclare(exchange: BROKER_NAME, type: ExchangeType.Fanout);
 
-                var message = JsonSerializer.Serialize(@event);
+                var message = JsonConvert.SerializeObject(@event);
                 var body = Encoding.UTF8.GetBytes(message);
 
                 policy.Execute(() =>
@@ -217,7 +217,7 @@ namespace EventBusRabbitMQ
             var channel = _persistentConnection.CreateModel();
 
             channel.ExchangeDeclare(exchange: BROKER_NAME,
-                                    type: "direct");
+                                    type: ExchangeType.Fanout);
 
             channel.QueueDeclare(queue: _queueName,
                                  durable: true,
@@ -251,7 +251,7 @@ namespace EventBusRabbitMQ
                     var handler = _serviceProvider.GetService(subscription.HandlerType);
                     if (handler == null) continue;
                     var eventType = _subsManager.GetEventTypeByName(eventName);
-                    var integrationEvent = JsonSerializer.Deserialize(message, eventType);
+                    var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
                     var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
 
                     await Task.Yield();
