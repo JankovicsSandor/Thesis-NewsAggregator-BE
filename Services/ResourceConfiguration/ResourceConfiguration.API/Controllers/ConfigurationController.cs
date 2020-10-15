@@ -18,13 +18,11 @@ namespace ResourceConfiguration.API.Controllers
     public class ConfigurationController : ControllerBase
     {
         private IMediator _mediator;
-        private readonly IEventBus _eventBus;
 
-
-        public ConfigurationController(IMediator mediator, IEventBus eventBus)
+        public ConfigurationController(IMediator mediator)
         {
             _mediator = mediator;
-            _eventBus = eventBus;
+ 
         }
 
         [HttpPost("")]
@@ -33,15 +31,6 @@ namespace ResourceConfiguration.API.Controllers
             await _mediator.Send(command);
             return Ok();
         }
-
-        [HttpGet("")]
-        public IActionResult SendNewEventToRabbitMq()
-        {
-           
-            _eventBus.Publish(new AddNewArticleEvent() { Description = "TEST", Link = "https://google.com" });
-            return Ok();
-        }
-
 
         [HttpPost("request")]
         public async Task<IActionResult> RequestResourceProperties([FromBody] RequestResourceProperties rssUrlModel)

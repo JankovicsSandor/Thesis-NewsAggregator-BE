@@ -36,14 +36,8 @@ namespace ResourceConfiguration.API
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddMediatR(typeof(ConfigurationController).Assembly);
 
-            services.AddHttpClient<IResourceToDataNetworkClient, ResourceToDataNetworkClient>();
-
             services.AddTransient<IFeedReader, FeedReader>();
             services.AddTransient<IResourceDownloader, ResourceDownloader>();
-
-            // TODO remove this line
-            services.AddEventBus(Configuration);
-            services.AddIntegrationServices(Configuration);
 
             var hostedServiceActive = Configuration.GetSection("WorkerServiceActive").Value;
             Console.WriteLine($"Active value: {hostedServiceActive}");
@@ -79,7 +73,7 @@ namespace ResourceConfiguration.API
                 throw new Exception("Database connection string is not correct.");
             }
 
-            services.AddDbContext<newsaggregatorresourceContext>(config => config.UseMySql(connectionString));
+            services.AddDbContext<newsaggregatorresourceContext>(config => config.UseMySql(connectionString, builder => builder.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(10),errorNumbersToAdd:null)));
 
             services.AddControllers();
         }

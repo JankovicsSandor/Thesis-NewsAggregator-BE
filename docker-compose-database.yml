@@ -1,0 +1,29 @@
+version: "3.4"
+
+services:
+  mongoDatabase:
+    restart: always
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootPassword
+    volumes:
+      - ./mongoDatabase:/data/db
+    ports:
+      - "27017:27017"
+  mysql:
+    restart: always
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+    volumes:
+      - ./Database:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "8080:15672"
+    volumes:
+      - ./rabbitMq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf

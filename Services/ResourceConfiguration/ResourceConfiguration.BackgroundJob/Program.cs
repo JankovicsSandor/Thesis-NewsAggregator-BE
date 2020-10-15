@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ResourceConfiguration.BackgroundJob.EventBus;
@@ -15,7 +16,10 @@ namespace ResourceConfiguration.BackgroundJob
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddEventBus(hostContext.Configuration);
+
+                    IConfiguration Configuration = hostContext.Configuration;
+                    services.AddEventBus(Configuration);
+                    services.AddIntegrationServices(Configuration);
 
                     services.AddHostedService<ResourceScraper>();
                 });
