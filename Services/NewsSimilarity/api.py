@@ -2,10 +2,13 @@
 from flask import Flask,jsonify,abort,request
 from textToId import TextToId
 from message import RabbitMqConnectionManager
-
+from text_sim import TextSimilarity
 app = Flask(__name__)
 PREFIX = "/api/similarity"
-eventBroker=RabbitMqConnectionManager()
+eventBroker = RabbitMqConnectionManager()
+similarityManager=TextSimilarity()
+
+
 @app.route(PREFIX+'/')
 def index():
     return "Hello, World!"
@@ -18,8 +21,9 @@ def getMostSimilarArticles():
     convertedId=converter.createIdFromText(request.json['summary'])
     return jsonify({'id':convertedId}),201
 
-def newMessage(ch, method, properties, body):
-      print(" [x] %r" % body)
+def newMessage(ch, method, properties, body):   
+    print(" [x] %r" % body)
+    print(" [x] %r" % similarityManager.getMostSimilarNews(body.summary))
 
 @app.teardown_request
 def checkin_db(exc):
