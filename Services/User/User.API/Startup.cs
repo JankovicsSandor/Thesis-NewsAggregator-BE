@@ -26,6 +26,9 @@ namespace User.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddHealthChecks();
+
             var connectionString = Configuration.GetSection("MYSQLCONNSTR").Value;
 
             if (string.IsNullOrEmpty(connectionString))
@@ -60,6 +63,7 @@ namespace User.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/api/user/health_check");
                 endpoints.MapControllers();
             });
         }

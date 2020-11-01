@@ -5,17 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ResourceConfiguration.API.Controllers;
-using ResourceConfiguration.API.NetworkClient;
 using ResourceConfiguration.BackgroundJob;
 using ResourceConfigurator.DataAccess.Database;
-using Serilog;
 using Microsoft.EntityFrameworkCore;
 using System;
-using ResourceConfigurator.NetworkClient;
 using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
-using System.Collections;
 using ResourceConfiguration.BackgroundJob.Worker;
-using ResourceConfiguration.BackgroundJob.EventBus;
+using ResourceConfigurator.NetworkClient.MetaData;
 
 namespace ResourceConfiguration.API
 {
@@ -38,6 +34,9 @@ namespace ResourceConfiguration.API
 
             services.AddTransient<IFeedReader, FeedReader>();
             services.AddTransient<IResourceDownloader, ResourceDownloader>();
+            services.AddTransient<IMetaDataReader, MetaDataReader>();
+
+            services.AddHealthChecks();
 
             var hostedServiceActive = Configuration.GetSection("WorkerServiceActive").Value;
             Console.WriteLine($"Active value: {hostedServiceActive}");
@@ -63,8 +62,6 @@ namespace ResourceConfiguration.API
                        .AllowAnyHeader();
             }));
 
-            services.AddSingleton<IGetResourceNetworkClient, GetResourceNetworkClient>();
-
             // var connectionString = $"Server={dbserver};port={port};user id={dbuser};password={dbpw};database={dbname}";
             var connectionString = Configuration.GetSection("MYSQLCONNSTR").Value;
 
@@ -73,7 +70,7 @@ namespace ResourceConfiguration.API
                 throw new Exception("Database connection string is not correct.");
             }
 
-            services.AddDbContext<newsaggregatorresourceContext>(config => config.UseMySql(connectionString, builder => builder.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(10),errorNumbersToAdd:null)));
+            services.AddDbContext<newsaggregatorresourceContext>(config => config.UseMySql(connectionString, builder => builder.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(10), errorNumbersToAdd: null)));
 
             services.AddControllers();
         }
@@ -86,6 +83,8 @@ namespace ResourceConfiguration.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UsePathBase("/api/resource/configuration/");
+
             app.UseCors("CorsPolicy");
             app.UseRouting();
 
@@ -93,6 +92,7 @@ namespace ResourceConfiguration.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/api/resource/configuration/health_check");
                 endpoints.MapControllers();
             });
         }

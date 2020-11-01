@@ -38,6 +38,8 @@ namespace News.API
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddMediatR(typeof(ArticleController).Assembly);
 
+            services.AddHealthChecks();
+
             services.AddControllers();
 
             var connectionString = Configuration.GetSection("MYSQLCONNSTR").Value;
@@ -67,13 +69,15 @@ namespace News.API
             }
 
             app.UseRouting();
-
             app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
+            app.UsePathBase("/api/news");
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/api/news/health_check");
                 endpoints.MapControllers();
             });
         }
