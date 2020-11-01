@@ -21,6 +21,8 @@ services:
         - RABBITMQ_PASS=adminPw
         - RABBITMQ_RETRY=5
         - ASPNETCORE_ENVIRONMENT=Development
+        - APPSETTING_BACKGROUND_DELAY_SEC=300
+        - APPSETTING_DATA_URL="https://localhost:10010/api/news/"
     build:
       context: .
       dockerfile: Services/ResourceConfiguration/ResourceConfiguration.API/Dockerfile
@@ -54,14 +56,14 @@ services:
        - ./ssl/webserver.pfx:/https/webserver.pfx
     ports:
       - "10010:443"
-  collector.api:
-    image: ${DOCKER_REGISTRY-}collectorapi
-    environment:
-        - RABBITMQ_USER=admin
-        - RABBITMQ_PASS=adminPw
-        - RABBITMQ_HOST=rabbitmq
-    build:
-      context: ./Services/NewsSimilarity/
-      dockerfile: ./Dockerfile
-    ports:
-      - "10015:5000"
+#  collector.api:
+#    image: ${DOCKER_REGISTRY-}collectorapi
+#    environment:
+#        - RABBITMQ_USER=admin
+#        - RABBITMQ_PASS=adminPw
+#        - RABBITMQ_HOST=rabbitmq
+#    build:
+#      context: ./Services/NewsSimilarity/
+#      dockerfile: ./Dockerfile
+#    ports:
+#      - "10015:5000"
