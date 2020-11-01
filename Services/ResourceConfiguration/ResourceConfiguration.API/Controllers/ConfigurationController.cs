@@ -13,7 +13,7 @@ using ResourceConfigurator.Shared.Event;
 
 namespace ResourceConfiguration.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ConfigurationController : ControllerBase
     {

@@ -9,7 +9,7 @@ using News.API.BussinessLogic.AddNewResource.Command;
 
 namespace News.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ResourceController : ControllerBase
     {

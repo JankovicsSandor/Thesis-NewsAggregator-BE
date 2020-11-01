@@ -11,7 +11,7 @@ using News.API.BussinessLogic.GetArticle.Command;
 
 namespace News.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ArticleController : ControllerBase
     {
