@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-alpine AS build
 WORKDIR /src
-COPY ["Services/Writer.API/Writer.API.csproj", "Services/Writer.API/"]
-RUN dotnet restore "Services/Writer.API/Writer.API.csproj"
+COPY ["Services/Reader/Reader.API/Reader.API.csproj", "Services/Reader/Reader.API/"]
+RUN dotnet restore "Services/Reader/Reader.API/Reader.API.csproj"
 COPY . .
-WORKDIR "/src/Services/Writer.API"
-RUN dotnet build "Writer.API.csproj" -c Release -o /app/build
+WORKDIR "/src/Services/Reader/Reader.API"
+RUN dotnet build "Reader.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Writer.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "Reader.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Writer.API.dll"]
+ENTRYPOINT ["dotnet", "Reader.API.dll"]

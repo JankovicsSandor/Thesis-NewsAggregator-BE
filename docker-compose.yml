@@ -67,3 +67,15 @@ services:
 #      dockerfile: ./Dockerfile
 #    ports:
 #      - "10015:5000"
+
+  reader.api:
+    image: ${DOCKER_REGISTRY-}readerapi
+    build:
+      context: .
+      dockerfile: Services/Reader/Reader.API/Dockerfile
+  writer.api:
+    image: ${DOCKER_REGISTRY-}writerapi
+    build:
+      context: .
+      dockerfile: Services/Writer/Writer.API/Dockerfile
+

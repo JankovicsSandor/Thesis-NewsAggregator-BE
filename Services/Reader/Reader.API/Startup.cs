@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Writer.API
+namespace Reader.API
 {
     public class Startup
     {
@@ -45,7 +45,7 @@ namespace Writer.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/api/news/write/health_check");
+                endpoints.MapHealthChecks("/api/news/read/health_check");
                 endpoints.MapControllers();
             });
         }
