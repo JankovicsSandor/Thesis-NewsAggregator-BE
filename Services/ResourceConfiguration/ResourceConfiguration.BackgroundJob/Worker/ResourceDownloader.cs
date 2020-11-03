@@ -33,6 +33,7 @@ namespace ResourceConfiguration.BackgroundJob.Worker
         public async Task ProcessResources()
         {
             List<Resource> resourceList = _databasecontext.Resource.Where(e => e.FeedId != null).ToList();
+            // TODO check if resources can work paralell
             foreach (Resource oneResource in resourceList)
             {
                 await ProcessOneResource(oneResource);
@@ -74,8 +75,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
                         _logger.LogError(e.Message);
                     }
                 }
-
-
             }
             else
             {

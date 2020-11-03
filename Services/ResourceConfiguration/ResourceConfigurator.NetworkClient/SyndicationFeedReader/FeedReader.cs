@@ -60,7 +60,8 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
 
             ConcurrentBag<AddNewArticleEvent> articles = new ConcurrentBag<AddNewArticleEvent>();
 
-            Parallel.ForEach(feed.Items, (currentArticle) =>
+            //TODO check for paralell execution
+            foreach (var currentArticle in feed.Items)
             {
                 string newsUrl = currentArticle.Links.FirstOrDefault().Uri.ToString();
                 AddNewArticleEvent result = new AddNewArticleEvent()
@@ -72,7 +73,7 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
                     // TODO Add picture
                     Picture = _metaDataReader.GetWebsiteMetadata(newsUrl).ImageUrl
                 };
-            });
+            }
             return articles;
         }
     }
