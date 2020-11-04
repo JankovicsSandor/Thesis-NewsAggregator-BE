@@ -26,7 +26,7 @@ namespace ResourceConfigurator.NetworkClient
 
         public async Task AddNewArticleToData(AddNewArticleEvent newItem)
         {
-            HttpResponseMessage response = await _client.PostAsync("api/article", new StringContent(JsonConvert.SerializeObject(newItem), Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await _client.PostAsync("article", new StringContent(JsonConvert.SerializeObject(newItem), Encoding.UTF8, "application/json"));
 
             string content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
@@ -37,7 +37,7 @@ namespace ResourceConfigurator.NetworkClient
 
         public async Task<int> AddNewResourceToData(AddNewResourceEvent newItem)
         {
-            HttpResponseMessage response = await _client.PostAsync("api/resource", new StringContent(JsonConvert.SerializeObject(newItem), Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await _client.PostAsync("resource", new StringContent(JsonConvert.SerializeObject(newItem), Encoding.UTF8, "application/json"));
 
             string content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
