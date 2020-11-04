@@ -32,6 +32,13 @@ namespace ResourceConfiguration.API.Controllers
             return Ok();
         }
 
+        [HttpGet("")]
+        public async Task<IActionResult> almafa()
+        {
+            
+            return Ok("alma");
+        }
+
         [HttpPost("request")]
         public async Task<IActionResult> RequestResourceProperties([FromBody] RequestResourceProperties rssUrlModel)
         {

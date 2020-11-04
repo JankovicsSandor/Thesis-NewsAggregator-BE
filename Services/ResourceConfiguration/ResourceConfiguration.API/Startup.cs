@@ -12,6 +12,8 @@ using System;
 using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
 using ResourceConfiguration.BackgroundJob.Worker;
 using ResourceConfigurator.NetworkClient.MetaData;
+using ResourceConfigurator.NetworkClient;
+using EventBusRabbitMQ.ServiceCollectionExtension;
 
 namespace ResourceConfiguration.API
 {
@@ -35,6 +37,11 @@ namespace ResourceConfiguration.API
             services.AddTransient<IFeedReader, FeedReader>();
             services.AddTransient<IResourceDownloader, ResourceDownloader>();
             services.AddTransient<IMetaDataReader, MetaDataReader>();
+
+            services.AddHttpClient<IResourceToDataNetworkClient, ResourceToDataNetworkClient>();
+
+            services.AddEventBus(Configuration);
+            services.AddIntegrationServices(Configuration);
 
             services.AddHealthChecks();
 
@@ -72,7 +79,7 @@ namespace ResourceConfiguration.API
 
             services.AddDbContext<newsaggregatorresourceContext>(config => config.UseMySql(connectionString, builder => builder.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(10), errorNumbersToAdd: null)));
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,7 +90,7 @@ namespace ResourceConfiguration.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UsePathBase("/api/resource/configuration/");
+            app.UsePathBase("/api/resource");
 
             app.UseCors("CorsPolicy");
             app.UseRouting();
@@ -92,7 +99,7 @@ namespace ResourceConfiguration.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/api/resource/configuration/health_check");
+                endpoints.MapHealthChecks("/api/resource/health_check");
                 endpoints.MapControllers();
             });
         }

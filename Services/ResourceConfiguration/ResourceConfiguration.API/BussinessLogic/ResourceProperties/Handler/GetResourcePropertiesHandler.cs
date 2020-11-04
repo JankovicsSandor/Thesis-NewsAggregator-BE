@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using ResourceConfiguration.API.BussinessLogic.ResourceProperties.Command;
 using ResourceConfiguration.API.Models.Output;
-using ResourceConfiguration.API.NetworkClient;
+using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +12,9 @@ namespace ResourceConfiguration.API.BussinessLogic.ResourceProperties.Handler
 {
     public class GetResourcePropertiesHandler : IRequestHandler<GetResourcePropertiesCommand, ResourcePropertiesModel>
     {
-        private IGetResourceNetworkClient _networkClient;
+        private IFeedReader _networkClient;
 
-        public GetResourcePropertiesHandler(IGetResourceNetworkClient networkClient)
+        public GetResourcePropertiesHandler(IFeedReader networkClient)
         {
             _networkClient = networkClient;
         }

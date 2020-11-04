@@ -239,7 +239,7 @@ namespace EventBusRabbitMQ
 
         private async Task ProcessEvent(string eventName, string message)
         {
-            _logger.LogTrace("Processing RabbitMQ event: {EventName}", eventName);
+            _logger.LogInformation("Processing RabbitMQ event: {EventName}", eventName);
 
             if (_subsManager.HasSubscriptionsForEvent(eventName))
             {
@@ -249,7 +249,10 @@ namespace EventBusRabbitMQ
                 {
 
                     var handler = _serviceProvider.GetService(subscription.HandlerType);
-                    if (handler == null) continue;
+                    if (handler == null)
+                    {
+                        throw new InvalidOperationException($"Unable to resolve service for handler: {eventName}");
+                    }
                     var eventType = _subsManager.GetEventTypeByName(eventName);
                     var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
                     var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
