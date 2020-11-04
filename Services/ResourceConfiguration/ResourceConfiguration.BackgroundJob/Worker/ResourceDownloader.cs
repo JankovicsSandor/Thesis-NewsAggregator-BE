@@ -46,7 +46,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
             Lastsynchronizedresource lastSource = _databasecontext.Lastsynchronizedresource.FirstOrDefault(e => e.ResourceId == actualItem.Id);
             int i = 0;
             IEnumerable<AddNewArticleEvent> feedContent = _reader.GetFeedContent(actualItem.Url);
-            feedContent = feedContent.Reverse();
             if (lastSource == null)
             {
                 lastSource = new Lastsynchronizedresource() { ResourceId = actualItem.Id, Title = String.Empty, Description = String.Empty };

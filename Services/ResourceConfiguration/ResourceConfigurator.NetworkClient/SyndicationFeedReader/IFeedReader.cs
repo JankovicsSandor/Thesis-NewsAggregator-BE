@@ -1,4 +1,5 @@
-﻿using ResourceConfigurator.Shared.Event;
+﻿using ResourceConfiguration.API.Models.Output;
+using ResourceConfigurator.Shared.Event;
 using System.Collections.Generic;
 
 namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
@@ -7,5 +8,6 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
     {
         IEnumerable<AddNewArticleEvent> GetFeedContent(string url);
         string GetResourceProfilePicture(string url);
+        ResourcePropertiesModel GetResourceProperties(string url);
     }
 }

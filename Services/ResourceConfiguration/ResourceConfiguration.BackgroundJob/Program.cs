@@ -1,7 +1,7 @@
+using EventBusRabbitMQ.ServiceCollectionExtension;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ResourceConfiguration.BackgroundJob.EventBus;
 
 namespace ResourceConfiguration.BackgroundJob
 {

@@ -38,7 +38,6 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
                 {
                     Picture = feed.ImageUrl.ToString()
                 }
-
             };
         }
 
@@ -61,7 +60,8 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
             ConcurrentBag<AddNewArticleEvent> articles = new ConcurrentBag<AddNewArticleEvent>();
 
             //TODO check for paralell execution
-            foreach (var currentArticle in feed.Items)
+
+            Parallel.ForEach(feed.Items, (currentArticle) =>
             {
                 string newsUrl = currentArticle.Links.FirstOrDefault().Uri.ToString();
                 AddNewArticleEvent result = new AddNewArticleEvent()
@@ -73,8 +73,9 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
                     // TODO Add picture
                     Picture = _metaDataReader.GetWebsiteMetadata(newsUrl).ImageUrl
                 };
-            }
-            return articles;
+                articles.Add(result);
+            });
+            return articles.OrderByDescending(e => e.PublishDate);
         }
     }
 }
