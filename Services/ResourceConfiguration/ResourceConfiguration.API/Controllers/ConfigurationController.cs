@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventBusRabbitMQ.Abstractions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ResourceConfiguration.API.BussinessLogic.AddNewResource.Command;
 using ResourceConfiguration.API.BussinessLogic.ResourceProperties.Command;
 using ResourceConfiguration.API.Models.Input;
+using ResourceConfigurator.Shared.Event;
 
 namespace ResourceConfiguration.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ConfigurationController : ControllerBase
     {
@@ -20,6 +22,7 @@ namespace ResourceConfiguration.API.Controllers
         public ConfigurationController(IMediator mediator)
         {
             _mediator = mediator;
+ 
         }
 
         [HttpPost("")]
@@ -29,6 +32,12 @@ namespace ResourceConfiguration.API.Controllers
             return Ok();
         }
 
+        [HttpGet("")]
+        public async Task<IActionResult> almafa()
+        {
+            
+            return Ok("alma");
+        }
 
         [HttpPost("request")]
         public async Task<IActionResult> RequestResourceProperties([FromBody] RequestResourceProperties rssUrlModel)

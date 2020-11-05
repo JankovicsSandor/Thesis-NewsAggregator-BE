@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using EventBusRabbitMQ.ServiceCollectionExtension;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -18,6 +16,11 @@ namespace ResourceConfiguration.BackgroundJob
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+
+                    IConfiguration Configuration = hostContext.Configuration;
+                    services.AddEventBus(Configuration);
+                    services.AddIntegrationServices(Configuration);
+
                     services.AddHostedService<ResourceScraper>();
                 });
     }

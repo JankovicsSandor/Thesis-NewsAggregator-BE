@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using News.API.BussinessLogic.AddNewArticle.Command;
 using News.API.BussinessLogic.GetArticle.Command;
+using News.BussinessLogic.AddNewArticle.Command;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace News.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ArticleController : ControllerBase
     {

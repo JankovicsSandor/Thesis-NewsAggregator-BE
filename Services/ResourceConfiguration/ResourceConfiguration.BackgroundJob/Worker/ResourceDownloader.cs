@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using EventBusRabbitMQ.Abstractions;
+using Microsoft.Extensions.Logging;
 using ResourceConfigurator.DataAccess.Database;
 using ResourceConfigurator.NetworkClient;
 using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
@@ -17,14 +18,14 @@ namespace ResourceConfiguration.BackgroundJob.Worker
     {
         private readonly newsaggregatorresourceContext _databasecontext;
         private readonly IFeedReader _reader;
-        private readonly IResourceToDataNetworkClient _eventHub;
+        private readonly IEventBus _eventHub;
         private readonly ILogger<ResourceDownloader> _logger;
 
-        public ResourceDownloader(newsaggregatorresourceContext databasecontext, IFeedReader reader, IResourceToDataNetworkClient eventHub, ILogger<ResourceDownloader> logger)
+        public ResourceDownloader(newsaggregatorresourceContext databasecontext, IFeedReader reader, IEventBus eventBus, ILogger<ResourceDownloader> logger)
         {
             _databasecontext = databasecontext;
             _reader = reader;
-            _eventHub = eventHub;
+            _eventHub = eventBus;
             _logger = logger;
         }
 
@@ -32,6 +33,7 @@ namespace ResourceConfiguration.BackgroundJob.Worker
         public async Task ProcessResources()
         {
             List<Resource> resourceList = _databasecontext.Resource.Where(e => e.FeedId != null).ToList();
+            // TODO check if resources can work paralell
             foreach (Resource oneResource in resourceList)
             {
                 await ProcessOneResource(oneResource);
@@ -44,7 +46,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
             Lastsynchronizedresource lastSource = _databasecontext.Lastsynchronizedresource.FirstOrDefault(e => e.ResourceId == actualItem.Id);
             int i = 0;
             IEnumerable<AddNewArticleEvent> feedContent = _reader.GetFeedContent(actualItem.Url);
-            feedContent = feedContent.Reverse();
             if (lastSource == null)
             {
                 lastSource = new Lastsynchronizedresource() { ResourceId = actualItem.Id, Title = String.Empty, Description = String.Empty };
@@ -56,11 +57,16 @@ namespace ResourceConfiguration.BackgroundJob.Worker
                     try
                     {
                         item.FeedId = actualItem.FeedId.Value;
-                        await _eventHub.AddNewArticleToData(item);
+                        // Publish the new article to the hub
+                        // TODO handle failure
+                        _eventHub.Publish(item);
+
                         lastSource.Title = item.Title;
                         lastSource.Description = item.Description;
                         _databasecontext.Update(lastSource);
                         _databasecontext.SaveChanges();
+
+                        // TODO add integration event and pubish to hub
                     }
                     catch (Exception e)
                     {
@@ -68,8 +74,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
                         _logger.LogError(e.Message);
                     }
                 }
-
-
             }
             else
             {
@@ -81,7 +85,7 @@ namespace ResourceConfiguration.BackgroundJob.Worker
                     try
                     {
                         item.FeedId = actualItem.FeedId.Value;
-                        await _eventHub.AddNewArticleToData(item);
+                        _eventHub.Publish(item);
                         lastSource.Title = item.Title;
                         lastSource.Description = item.Description;
                         _databasecontext.Update(lastSource);

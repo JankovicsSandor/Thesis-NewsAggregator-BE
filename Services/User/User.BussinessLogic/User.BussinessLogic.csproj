@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\User.DataAccess\User.DataAccess.csproj" />
+    <ProjectReference Include="..\User.Data\User.Data.csproj" />
+    <ProjectReference Include="..\User.Shared\User.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

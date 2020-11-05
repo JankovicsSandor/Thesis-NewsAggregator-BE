@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using News.API.BussinessLogic.AddNewResource.Command;
+using News.BussinessLogic.AddNewResource.Command;
 
 namespace News.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ResourceController : ControllerBase
     {

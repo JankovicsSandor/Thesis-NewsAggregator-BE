@@ -1,0 +1,99 @@
+version: '3.4'
+
+services:
+#  nginx:
+#    image: nginx:alpine
+#    volumes:
+#       - ./ssl/server.key:/etc/ssl/server.key
+#       - ./ssl/server.crt:/etc/ssl/server.crt
+#       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+#    ports:
+#      - "80:80"
+#      - "80:80"
+  resourceconfiguration.api: 
+    image: ${DOCKER_REGISTRY-}resourceconfigurationapi
+    environment:
+        - MYSQLCONNSTR=Server=host.docker.internal;user id=root;password=admin;database=news_aggregator_resource;
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+        - RABBITMQ_HOST=host.docker.internal
+        - RABBITMQ_USER=admin
+        - RABBITMQ_PASS=adminPw
+        - RABBITMQ_RETRY=5
+        - ASPNETCORE_ENVIRONMENT=Development
+        - APPSETTING_BACKGROUND_DELAY_SEC=300
+        - APPSETTING_DATA_URL=http://host.docker.internal:10010/api/news/
+    build:
+      context: .
+      dockerfile: Services/ResourceConfiguration/ResourceConfiguration.API/Dockerfile
+    ports:
+        - "10000:80"
+    volumes:
+        - ./ssl/webserver.pfx:/https/webserver.pfx
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    environment:
+        - MYSQLCONNSTR=Server=host.docker.internal;user id=root;password=admin;database=news_aggregator_user;
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+    build:
+      context: .
+      dockerfile: Services/User/User.API/Dockerfile
+    ports:
+        - "10005:80"
+    volumes:
+        - ./ssl/webserver.pfx:/https/webserver.pfx
+  news.api:
+    image: ${DOCKER_REGISTRY-}newsapi
+    environment:
+        - MYSQLCONNSTR=Server=host.docker.internal;user id=root;password=admin;database=news_aggregator_data;
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+        - RABBITMQ_HOST=host.docker.internal
+        - RABBITMQ_USER=admin
+        - RABBITMQ_PASS=adminPw
+        - RABBITMQ_RETRY=5
+    build:
+      context: .
+      dockerfile: Services/News/News.API/Dockerfile
+    volumes:
+        - ./ssl/webserver.pfx:/https/webserver.pfx
+    ports:
+        - "10010:80"
+#  collector.api:
+#    image: ${DOCKER_REGISTRY-}collectorapi
+#    environment:
+#        - RABBITMQ_USER=admin
+#        - RABBITMQ_PASS=adminPw
+#        - RABBITMQ_HOST=rabbitmq
+#    build:
+#      context: ./Services/NewsSimilarity/
+#      dockerfile: ./Dockerfile
+#    ports:
+#      - "10015:5000"
+
+  reader.api:
+    image: ${DOCKER_REGISTRY-}readerapi
+    build:
+      context: .
+      dockerfile: Services/Reader/Reader.API/Dockerfile
+    environment:
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+    volumes:
+        - ./ssl/webserver.pfx:/https/webserver.pfx
+    ports:
+        - "10015:80"
+  writer.api:
+    image: ${DOCKER_REGISTRY-}writerapi
+    build:
+      context: .
+      dockerfile: Services/Writer/Writer.API/Dockerfile
+    environment:
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+    volumes:
+        - ./ssl/webserver.pfx:/https/webserver.pfx
+    ports:
+        - "10020:80"
+

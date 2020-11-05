@@ -4,9 +4,6 @@ using ResourceConfigurator.DataAccess.Database;
 using ResourceConfigurator.NetworkClient;
 using ResourceConfigurator.NetworkClient.SyndicationFeedReader;
 using ResourceConfigurator.Shared.Event;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,15 +14,13 @@ namespace ResourceConfiguration.API.BussinessLogic.AddNewResource.Handler
         private readonly newsaggregatorresourceContext _database;
         private readonly IResourceToDataNetworkClient _eventClient;
         private readonly IFeedReader _reader;
-        private readonly IMediator _mediator;
 
         public AddNewResourceCommandHandler(newsaggregatorresourceContext database, IFeedReader reader,
-            IResourceToDataNetworkClient eventClient,IMediator mediator)
+            IResourceToDataNetworkClient eventClient)
         {
             _database = database;
             _eventClient = eventClient;
             _reader = reader;
-            _mediator = mediator;
         }
 
         public async Task<Unit> Handle(AddNewResourceCommand request, CancellationToken cancellationToken)

@@ -1,11 +1,11 @@
-﻿using ResourceConfigurator.Shared.Event;
+﻿using Newtonsoft.Json;
+using ResourceConfigurator.Shared.Event;
 using ResourceConfigurator.Shared.Models.Events;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Text.Json;
 
 namespace ResourceConfigurator.NetworkClient
 {
@@ -26,7 +26,7 @@ namespace ResourceConfigurator.NetworkClient
 
         public async Task AddNewArticleToData(AddNewArticleEvent newItem)
         {
-            HttpResponseMessage response = await _client.PostAsync("api/article", new StringContent(JsonSerializer.Serialize(newItem), Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await _client.PostAsync("article", new StringContent(JsonConvert.SerializeObject(newItem), Encoding.UTF8, "application/json"));
 
             string content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
@@ -37,7 +37,7 @@ namespace ResourceConfigurator.NetworkClient
 
         public async Task<int> AddNewResourceToData(AddNewResourceEvent newItem)
         {
-            HttpResponseMessage response = await _client.PostAsync("api/resource", new StringContent(JsonSerializer.Serialize(newItem), Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = await _client.PostAsync("resource", new StringContent(JsonConvert.SerializeObject(newItem), Encoding.UTF8, "application/json"));
 
             string content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
@@ -45,7 +45,7 @@ namespace ResourceConfigurator.NetworkClient
                 throw new Exception(content);
             }
 
-            AddNewResourceEventResponse responseContent = JsonSerializer.Deserialize<AddNewResourceEventResponse>(content);
+            AddNewResourceEventResponse responseContent = JsonConvert.DeserializeObject<AddNewResourceEventResponse>(content);
 
             return responseContent.Id;
 

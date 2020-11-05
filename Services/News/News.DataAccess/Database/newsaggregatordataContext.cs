@@ -34,9 +34,7 @@ namespace News.DataAccess.Database
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_hungarian_ci");
+                    .HasColumnType("longtext");
 
                 entity.Property(e => e.FeedId)
                     .HasColumnName("feedId")
@@ -44,15 +42,11 @@ namespace News.DataAccess.Database
 
                 entity.Property(e => e.Link)
                     .HasColumnName("link")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_hungarian_ci");
+                    .HasColumnType("longtext");
 
                 entity.Property(e => e.Picture)
                     .HasColumnName("picture")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_hungarian_ci");
+                    .HasColumnType("longtext");
 
                 entity.Property(e => e.PublishDate)
                     .HasColumnName("publishDate")
@@ -60,9 +54,7 @@ namespace News.DataAccess.Database
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_hungarian_ci");
+                    .HasColumnType("longtext");
             });
 
             modelBuilder.Entity<Feed>(entity =>
@@ -75,15 +67,11 @@ namespace News.DataAccess.Database
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_hungarian_ci");
+                    .HasColumnType("longtext");
 
                 entity.Property(e => e.Picture)
                     .HasColumnName("picture")
-                    .HasColumnType("longtext")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_hungarian_ci");
+                    .HasColumnType("longtext");
             });
 
             OnModelCreatingPartial(modelBuilder);
