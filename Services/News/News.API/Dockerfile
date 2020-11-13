@@ -10,6 +10,8 @@ WORKDIR /src
 COPY ["Services/News/News.API/News.API.csproj", "Services/News/News.API/"]
 COPY ["Services/Shared/NewsAggregator.Shared/NewsAggregator.Shared.csproj", "Services/Shared/NewsAggregator.Shared/"]
 COPY ["Services/News/News.Shared/News.Shared.csproj", "Services/News/News.Shared/"]
+COPY ["BuilldingBlocks/EventBus/EventBusRabbitMq/EventBusRabbitMQ.csproj", "BuilldingBlocks/EventBus/EventBusRabbitMq/"]
+COPY ["Services/News/News.BussinessLogic/News.BussinessLogic.csproj", "Services/News/News.BussinessLogic/"]
 COPY ["Services/News/News.DataAccess/News.DataAccess.csproj", "Services/News/News.DataAccess/"]
 RUN dotnet restore "Services/News/News.API/News.API.csproj"
 COPY . .
