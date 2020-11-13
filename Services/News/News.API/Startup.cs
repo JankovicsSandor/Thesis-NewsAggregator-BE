@@ -1,26 +1,19 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Threading.Tasks;
 using AutoMapper;
 using EventBusRabbitMQ.Abstractions;
 using EventBusRabbitMQ.ServiceCollectionExtension;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using News.API.Controllers;
 using News.BussinessLogic;
-using News.BussinessLogic.EventHandler;
+using News.BussinessLogic.Event;
 using News.DataAccess.Database;
+using News.DataAccess.Repository;
 using News.Shared.Events;
 
 namespace News.API
@@ -44,6 +37,8 @@ namespace News.API
             {
                 cfg.AddProfile<AutoMapperProfile>();
             });
+
+            services.AddTransient<IArticleRepository, ArticleRepository>();
 
             services.AddAutoMapper(typeof(AddNewArticleEventHandler));
             services.AddMediatR(typeof(Startup).Assembly);
