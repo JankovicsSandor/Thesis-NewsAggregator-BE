@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\News.BussinessLogic\News.BussinessLogic.csproj" />
     <ProjectReference Include="..\..\Shared\NewsAggregator.Shared\NewsAggregator.Shared.csproj" />
     <ProjectReference Include="..\News.BussinessLogic\News.BussinessLogic.csproj" />
     <ProjectReference Include="..\News.DataAccess\News.DataAccess.csproj" />

@@ -64,16 +64,21 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
             Parallel.ForEach(feed.Items, (currentArticle) =>
             {
                 string newsUrl = currentArticle.Links.FirstOrDefault().Uri.ToString();
-                AddNewArticleEvent result = new AddNewArticleEvent()
+                // Every article must have a summary and a title
+                if (currentArticle.Summary != null && currentArticle.Title != null)
                 {
-                    Description = currentArticle.Summary.Text,
-                    Title = currentArticle.Title.Text,
-                    Link = currentArticle.Links.FirstOrDefault().Uri.ToString(),
-                    PublishDate = currentArticle.PublishDate.DateTime,
-                    // TODO Add picture
-                    Picture = _metaDataReader.GetWebsiteMetadata(newsUrl).ImageUrl
-                };
-                articles.Add(result);
+                    AddNewArticleEvent result = new AddNewArticleEvent()
+                    {
+                        Description = currentArticle.Summary.Text,
+                        Title = currentArticle.Title.Text,
+                        Link = currentArticle.Links.FirstOrDefault().Uri.ToString(),
+                        PublishDate = currentArticle.PublishDate.DateTime,
+                        // TODO Add picture
+                        Picture = _metaDataReader.GetWebsiteMetadata(newsUrl).ImageUrl
+                    };
+                    articles.Add(result);
+                }
+
             });
             return articles.OrderByDescending(e => e.PublishDate);
         }

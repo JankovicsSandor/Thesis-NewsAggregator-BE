@@ -55,6 +55,10 @@ namespace News.DataAccess.Database
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
                     .HasColumnType("longtext");
+
+                entity.Property(e => e.Guid)
+                   .HasColumnName("guid")
+                   .HasColumnType("varchar(250)");
             });
 
             modelBuilder.Entity<Feed>(entity =>

@@ -12,5 +12,6 @@ namespace News.DataAccess.Database
         public string Link { get; set; }
         public DateTime PublishDate { get; set; }
         public string Picture { get; set; }
+        public string Guid { get; set; }
     }
 }

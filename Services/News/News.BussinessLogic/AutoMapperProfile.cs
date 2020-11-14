@@ -11,7 +11,8 @@ namespace News.BussinessLogic
     {
         public AutoMapperProfile()
         {
-            CreateMap<Article, AddNewArticleEvent>().ReverseMap();
+            CreateMap<AddNewArticleEvent, Article>().ForMember(dest => dest.Id, opt => opt.Ignore())
+                                                    .ForMember(dest => dest.Guid, opt => opt.MapFrom(src => src.Id.ToString()));
         }
     }
 }
