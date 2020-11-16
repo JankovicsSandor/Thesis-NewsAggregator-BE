@@ -12,7 +12,6 @@
 
 #Persistent volume files
 Database/
-rabbitMq/
 mongoDatabase/
 
 #ssl certificate
