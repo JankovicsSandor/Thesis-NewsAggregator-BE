@@ -1,5 +1,6 @@
 import pika
 import os
+import json
 
 class RabbitMqConnectionManager(object):
 
@@ -9,7 +10,7 @@ class RabbitMqConnectionManager(object):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(os.environ['RABBITMQ_HOST'],5672,"/",credentials,connection_attempts=4,retry_delay=5.0))
         channel = self.connection.channel()
 
-        channel.exchange_declare(exchange='news_aggregator_bus', exchange_type='direct')
+       # channel.exchange_declare(exchange='news_aggregator_bus', exchange_type='direct')
         channel.queue_declare(queue=eventName, exclusive=True)
         channel.queue_bind(exchange='news_aggregator_bus', queue=eventName)
         print(' [*] Waiting for messages. To exit press CTRL+C')
@@ -22,4 +23,7 @@ class RabbitMqConnectionManager(object):
             self.connection.close()
     
     def sendEvent(self, eventName, eventBody):
-        print("almafa")
+        if (self.connection):
+            channel = self.connection.channel()
+            message = json.dumps(eventBody)
+            channel.basic_publish(exchange="news_aggregator_bus",routing_key=eventName,body=message)
