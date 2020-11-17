@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using News.BussinessLogic.ArticleResource.AddArticle;
 using News.BussinessLogic.ArticleResource.GetArticle;
+using News.BussinessLogic.GetArticle;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,18 +20,26 @@ namespace News.API.Controllers
             _meditor = mediator;
         }
 
+
         [HttpGet("")]
         public async Task<IActionResult> GetArticles([FromQuery] GetArticleCommand command)
         {
-
             return Ok(await _meditor.Send(command));
         }
 
-        [HttpPost("")]
-        public async Task<IActionResult> AddNewArticle([FromBody] AddNewArticleCommand newArticle)
+
+        /// <summary>
+        /// Get an article item from the descripition.
+        /// </summary>
+        /// <param name="description">Description of the article item</param>
+        /// <returns>Returns the article item</returns>
+        [HttpGet("")]
+        public async Task<IActionResult> GetArticleItemFromDescription([FromQuery] string description)
         {
-            await _meditor.Send(newArticle);
-            return Ok();
+            return Ok(await _meditor.Send(new GetArticleByDescriptionCommand()
+            {
+                Description = description
+            }));
         }
     }
 }

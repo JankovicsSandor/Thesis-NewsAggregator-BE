@@ -17,8 +17,8 @@ services:
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
         - RABBITMQ_HOST=host.docker.internal
-        - RABBITMQ_USER=admin
-        - RABBITMQ_PASS=adminPw
+        - RABBITMQ_USER=client
+        - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
         - RABBITMQ_RETRY=5
         - ASPNETCORE_ENVIRONMENT=Development
         - APPSETTING_BACKGROUND_DELAY_SEC=300
@@ -50,8 +50,8 @@ services:
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
         - RABBITMQ_HOST=host.docker.internal
-        - RABBITMQ_USER=admin
-        - RABBITMQ_PASS=adminPw
+        - RABBITMQ_USER=client
+        - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
         - RABBITMQ_RETRY=5
     build:
       context: .
@@ -60,18 +60,17 @@ services:
         - ./ssl/webserver.pfx:/https/webserver.pfx
     ports:
         - "10010:80"
-#  collector.api:
-#    image: ${DOCKER_REGISTRY-}collectorapi
-#    environment:
-#        - RABBITMQ_USER=admin
-#        - RABBITMQ_PASS=adminPw
-#        - RABBITMQ_HOST=rabbitmq
-#    build:
-#      context: ./Services/NewsSimilarity/
-#      dockerfile: ./Dockerfile
-#    ports:
-#      - "10015:5000"
-
+  collector.api:
+    image: ${DOCKER_REGISTRY-}collectorapi
+    environment:
+       - RABBITMQ_USER=client
+       - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
+       - RABBITMQ_HOST=rabbitmq
+    build:
+      context: ./Services/NewsSimilarity/
+      dockerfile: ./Dockerfile
+    ports:
+      - "10015:5000"
   reader.api:
     image: ${DOCKER_REGISTRY-}readerapi
     build:

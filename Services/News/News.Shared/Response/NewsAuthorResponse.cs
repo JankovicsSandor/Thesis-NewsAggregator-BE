@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace News.Shared.Models
+namespace News.Shared.Response
 {
     public class NewsAuthorResponse
     {

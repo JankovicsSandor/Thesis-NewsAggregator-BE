@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventBusRabbitMQ.Abstractions;
+using EventBusRabbitMQ.ServiceCollectionExtension;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Writer.BussinessLogic.EventHandler;
+using Writer.Shared.Events;
 
 namespace Writer.API
 {
@@ -25,6 +29,12 @@ namespace Writer.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<NewsGroupDoneEventHandler>();
+
+            //Add evnet bus dependency services
+            services.AddEventBus(Configuration);
+            services.AddIntegrationServices(Configuration);
+
             services.AddHealthChecks();
             services.AddControllers().AddNewtonsoftJson();
         }
@@ -36,6 +46,10 @@ namespace Writer.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //Subscribe for rabbitmq event
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<NewsGroupDoneEvent, NewsGroupDoneEventHandler>();
 
             app.UseHttpsRedirection();
 

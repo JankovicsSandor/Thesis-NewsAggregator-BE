@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuilldingBlocks\EventBus\EventBusRabbitMq\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\Writer.Shared\Writer.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

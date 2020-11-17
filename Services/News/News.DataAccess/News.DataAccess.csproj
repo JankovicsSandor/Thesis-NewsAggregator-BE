@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\News.Shared\News.Shared.csproj" />
+  </ItemGroup>
 </Project>

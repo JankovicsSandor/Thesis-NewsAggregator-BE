@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using News.Shared.Models;
+using News.Shared.Response;
 using System;
 using System.Collections.Generic;
 using System.Text;
