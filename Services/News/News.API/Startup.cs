@@ -39,6 +39,7 @@ namespace News.API
             });
 
             services.AddTransient<IArticleRepository, ArticleRepository>();
+            services.AddTransient<IFeedRepository, FeedRepository>();
 
             services.AddAutoMapper(typeof(AddNewArticleEventHandler));
             services.AddMediatR(typeof(Startup).Assembly);
@@ -59,7 +60,7 @@ namespace News.API
             }
 
             services.AddTransient<AddNewArticleEventHandler>();
-                
+
             // Add Cors
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {

@@ -33,7 +33,7 @@ namespace News.API.Controllers
         /// </summary>
         /// <param name="description">Description of the article item</param>
         /// <returns>Returns the article item</returns>
-        [HttpGet("")]
+        [HttpGet("byDescription")]
         public async Task<IActionResult> GetArticleItemFromDescription([FromQuery] string description)
         {
             return Ok(await _meditor.Send(new GetArticleByDescriptionCommand()
