@@ -1,7 +1,7 @@
 #!flask/bin/python
 from flask import Flask,jsonify,abort,request
-from newGroupDoneEvent import NewsGroupDoneEvent
 from message import RabbitMqConnectionManager
+from newsGroupDoneEvent import NewsGroupDoneEvent
 from text_sim import TextSimilarity
 app = Flask(__name__)
 PREFIX = "/api/similarity"
@@ -22,7 +22,7 @@ def index():
 def newMessage(ch, method, properties, body):   
     print(" [x] %r" % body)
     #print(" [x] %r" % similarityManager.getMostSimilarNews(body.summary))
-    eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent([]))
+    eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(body.summary,[]))
 
 @app.teardown_request
 def checkin_db(exc):
