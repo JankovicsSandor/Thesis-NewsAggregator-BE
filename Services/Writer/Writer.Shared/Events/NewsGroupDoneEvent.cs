@@ -11,6 +11,8 @@ namespace Writer.Shared.Events
         public string Title { get; set; }
         public string Description { get; set; }
         public string Link { get; set; }
+        public string FeedName { get; set; }
+        public string FeedPicture { get; set; }
         public DateTime PublishDate { get; set; }
         public string Picture { get; set; }
         public IEnumerable<string> Similar { get; set; }

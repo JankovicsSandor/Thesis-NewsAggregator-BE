@@ -18,8 +18,8 @@ namespace EventBusRabbitMQ
 {
     public class EventBusRabbitMQ : IEventBus, IDisposable
     {
-        const string BROKER_NAME = "news_aggregator_bus";
-
+        private string brokerName = "news_aggregator_bus";
+        private string exchangeMode="direct";
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
@@ -28,12 +28,14 @@ namespace EventBusRabbitMQ
         private IModel _consumerChannel;
         private string _queueName;
 
-        public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, IServiceCollection services, ILogger<EventBusRabbitMQ> logger, IEventBusSubscriptionsManager subsManager, string queueName = null, int retryCount = 5)
+        public EventBusRabbitMQ(IRabbitMQPersistentConnection persistentConnection, IServiceCollection services, ILogger<EventBusRabbitMQ> logger, IEventBusSubscriptionsManager subsManager, string queueName = null, string exchangeName = "news_aggregator_bus",string exchangeMode="direct", int retryCount = 5)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
             _queueName = queueName;
+            brokerName = exchangeName;
+            this.exchangeMode = exchangeMode;
             _consumerChannel = CreateConsumerChannel();
             _retryCount = retryCount;
             _serviceProvider = services.BuildServiceProvider();
@@ -50,7 +52,7 @@ namespace EventBusRabbitMQ
             using (var channel = _persistentConnection.CreateModel())
             {
                 channel.QueueUnbind(queue: _queueName,
-                    exchange: BROKER_NAME,
+                    exchange: brokerName,
                     routingKey: eventName);
 
                 if (_subsManager.IsEmpty)
@@ -84,7 +86,7 @@ namespace EventBusRabbitMQ
 
                 _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
 
-                channel.ExchangeDeclare(exchange: BROKER_NAME, type: ExchangeType.Direct);
+                channel.ExchangeDeclare(exchange: brokerName, type: exchangeMode);
 
                 var message = JsonConvert.SerializeObject(@event);
                 var body = Encoding.UTF8.GetBytes(message);
@@ -97,7 +99,7 @@ namespace EventBusRabbitMQ
                     _logger.LogTrace("Publishing event to RabbitMQ: {EventId}", @event.Id);
 
                     channel.BasicPublish(
-                        exchange: BROKER_NAME,
+                        exchange: brokerName,
                         routingKey: eventName,
                         mandatory: true,
                         basicProperties: properties,
@@ -132,7 +134,7 @@ namespace EventBusRabbitMQ
                 using (var channel = _persistentConnection.CreateModel())
                 {
                     channel.QueueBind(queue: _queueName,
-                                      exchange: BROKER_NAME,
+                                      exchange: brokerName,
                                       routingKey: eventName);
                 }
             }
@@ -187,11 +189,6 @@ namespace EventBusRabbitMQ
 
             try
             {
-                if (message.ToLowerInvariant().Contains("throw-fake-exception"))
-                {
-                    throw new InvalidOperationException($"Fake exception requested: \"{message}\"");
-                }
-
                 await ProcessEvent(eventName, message);
             }
             catch (Exception ex)
@@ -216,8 +213,8 @@ namespace EventBusRabbitMQ
 
             var channel = _persistentConnection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: BROKER_NAME,
-                                    type: ExchangeType.Direct);
+            channel.ExchangeDeclare(exchange: brokerName,
+                                    type: exchangeMode);
 
             channel.QueueDeclare(queue: _queueName,
                                  durable: true,

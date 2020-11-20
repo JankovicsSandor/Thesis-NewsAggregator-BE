@@ -1,4 +1,5 @@
 ﻿using ResourceConfigurator.Shared.Event;
+using ResourceConfigurator.Shared.Models.External;
 using System.Threading.Tasks;
 
 namespace ResourceConfigurator.NetworkClient
@@ -7,5 +8,6 @@ namespace ResourceConfigurator.NetworkClient
     {
         Task AddNewArticleToData(AddNewArticleEvent newItem);
         Task<int> AddNewResourceToData(AddNewResourceEvent newItem);
+        Task<FeedModel> GetFeedPropertiesFromId(int feedId);
     }
 }

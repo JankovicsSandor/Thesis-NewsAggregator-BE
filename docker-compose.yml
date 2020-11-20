@@ -60,17 +60,6 @@ services:
         - ./ssl/webserver.pfx:/https/webserver.pfx
     ports:
         - "10010:80"
-  collector.api:
-    image: ${DOCKER_REGISTRY-}collectorapi
-    environment:
-       - RABBITMQ_USER=client
-       - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
-       - RABBITMQ_HOST=rabbitmq
-    build:
-      context: ./Services/NewsSimilarity/
-      dockerfile: ./Dockerfile
-    ports:
-      - "10015:5000"
   reader.api:
     image: ${DOCKER_REGISTRY-}readerapi
     build:
@@ -91,6 +80,14 @@ services:
     environment:
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+        - MONGODB_CONNECTION="mongodb://root:rootPassword@localhost:27017"
+        - MONGODB_DATABASE="NewsGroup"
+        - MONGODB_COLLECTION_NAME="News"
+        - RABBITMQ_HOST=host.docker.internal
+        - RABBITMQ_USER=client
+        - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
+        - RABBITMQ_RETRY=5
+        - APPSETTING_NEWS_URL=http://host.docker.internal:10010/api/news/
     volumes:
         - ./ssl/webserver.pfx:/https/webserver.pfx
     ports:

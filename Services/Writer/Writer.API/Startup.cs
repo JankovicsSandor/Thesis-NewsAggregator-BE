@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Writer.BussinessLogic.EventHandler;
 using Writer.BussinessLogic.ExternalDataProvider.NewsData;
+using Writer.DataAccess.Database;
 using Writer.Shared.Events;
 
 namespace Writer.API
@@ -31,6 +32,8 @@ namespace Writer.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient<INewsHttpClient, NewsHttpClient>();
+
+            services.AddSingleton<IMongoDatabaseService, MongoDatabaseService>();
 
             services.AddTransient<NewsGroupDoneEventHandler>();
 

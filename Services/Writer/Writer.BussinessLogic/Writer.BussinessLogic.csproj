@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\BuilldingBlocks\EventBus\EventBusRabbitMq\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\Writer.DataAccess\Writer.DataAccess.csproj" />
     <ProjectReference Include="..\Writer.Shared\Writer.Shared.csproj" />
   </ItemGroup>
 

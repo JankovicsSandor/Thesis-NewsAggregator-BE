@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Writer.BussinessLogic\Writer.BussinessLogic.csproj" />
+    <ProjectReference Include="..\Writer.DataAccess\Writer.DataAccess.csproj" />
   </ItemGroup>
 
 

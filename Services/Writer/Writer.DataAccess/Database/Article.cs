@@ -9,7 +9,7 @@ namespace Writer.DataAccess.Database
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [BsonElement("Title")]
         [BsonRepresentation(BsonType.String)]
@@ -31,7 +31,14 @@ namespace Writer.DataAccess.Database
         [BsonRepresentation(BsonType.String)]
         public string Picture { get; set; }
 
-        // TODO check if needed
-        // public Feed Feed { get; set; }
+
+        [BsonElement("FeedName")]
+        [BsonRepresentation(BsonType.String)]
+        public string FeedName { get; set; }
+
+
+        [BsonElement("FeedPicture")]
+        [BsonRepresentation(BsonType.String)]
+        public string FeedPicture { get; set; }
     }
 }

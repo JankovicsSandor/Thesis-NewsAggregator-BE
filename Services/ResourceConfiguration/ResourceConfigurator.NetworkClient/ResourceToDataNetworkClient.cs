@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ResourceConfigurator.Shared.Event;
 using ResourceConfigurator.Shared.Models.Events;
+using ResourceConfigurator.Shared.Models.External;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -48,8 +49,21 @@ namespace ResourceConfigurator.NetworkClient
             AddNewResourceEventResponse responseContent = JsonConvert.DeserializeObject<AddNewResourceEventResponse>(content);
 
             return responseContent.Id;
+        }
 
+        public async Task<FeedModel> GetFeedPropertiesFromId(int feedId)
+        {
+            HttpResponseMessage response = await _client.GetAsync($"feed/{feedId}");
 
+            string content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(content);
+            }
+
+            FeedModel responseContent = JsonConvert.DeserializeObject<FeedModel>(content);
+
+            return responseContent;
         }
 
 

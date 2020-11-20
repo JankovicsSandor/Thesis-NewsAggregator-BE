@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ResourceConfigurator.Shared\ResourceConfigurator.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="NewsNetworkClient\" />
+  </ItemGroup>
+
 </Project>

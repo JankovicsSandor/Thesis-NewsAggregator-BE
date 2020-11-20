@@ -7,6 +7,7 @@ app = Flask(__name__)
 PREFIX = "/api/similarity"
 eventBroker = RabbitMqConnectionManager()
 similarityManager=TextSimilarity()
+import json
 
 
 @app.route(PREFIX+'/')
@@ -18,18 +19,21 @@ def index():
 #    if not request.json:
 #        abort(400)
 #    return jsonify({'id':convertedId}),201
-
-def newMessage(ch, method, properties, body):   
-    print(" [x] %r" % body)
+counter=1
+def newMessage(ch, method, properties, body):
+    global counter
+    print(counter)
+    counter=counter+1
+    print(" [x] %r" % json.loads(body.decode()))
     #print(" [x] %r" % similarityManager.getMostSimilarNews(body.summary))
-    eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(body.summary,[]))
+    eventBroker.sendEvent('NewsGroupDone',NewsGroupDoneEvent(json.loads(body.decode()),[]))
 
 @app.teardown_request
 def checkin_db(exc):
     if eventBroker:
         eventBroker.closeConnection()
 
-eventBroker.registerToEvent('AddNewArticleEvent', newMessage)  
+eventBroker.registerToEvent('NewsArticles','AddNewArticleEvent', newMessage)  
 if __name__ == '__main__':
     app.run()
 

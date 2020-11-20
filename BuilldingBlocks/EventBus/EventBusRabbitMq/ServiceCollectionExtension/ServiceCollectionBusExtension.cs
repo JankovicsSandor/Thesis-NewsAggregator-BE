@@ -13,8 +13,9 @@ namespace EventBusRabbitMQ.ServiceCollectionExtension
     {
         public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            var subscriptionClientName = configuration["SubscriptionClientName"];
-
+            string subscriptionClientName = configuration["SubscriptionClientName"];
+            string exchangeName = configuration["ExchangeName"] ?? "news_aggregator_bus";
+            string exchangeMode = configuration["ExchangeMode"] ?? "direct";
             services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
             {
                 var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
@@ -27,7 +28,7 @@ namespace EventBusRabbitMQ.ServiceCollectionExtension
                     retryCount = int.Parse(configuration["RABBITMQ_RETRY"]);
                 }
 
-                return new EventBusRabbitMQ(rabbitMQPersistentConnection, services, logger, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+                return new EventBusRabbitMQ(rabbitMQPersistentConnection, services, logger, eventBusSubcriptionsManager, subscriptionClientName, exchangeName, exchangeMode, retryCount);
             });
 
 
