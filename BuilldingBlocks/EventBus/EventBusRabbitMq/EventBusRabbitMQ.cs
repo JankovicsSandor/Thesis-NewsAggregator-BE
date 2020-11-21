@@ -86,8 +86,8 @@ namespace EventBusRabbitMQ
 
                 _logger.LogTrace("Declaring RabbitMQ exchange to publish event: {EventId}", @event.Id);
 
-                channel.ExchangeDeclare(exchange: brokerName, type: exchangeMode);
-
+                //channel.ExchangeDeclare(exchange: brokerName, type: exchangeMode);
+                
                 var message = JsonConvert.SerializeObject(@event);
                 var body = Encoding.UTF8.GetBytes(message);
 
@@ -131,12 +131,14 @@ namespace EventBusRabbitMQ
                     _persistentConnection.TryConnect();
                 }
 
-                using (var channel = _persistentConnection.CreateModel())
+                /*
+                 * TODO create external function from bindings and creations
+                 * using (var channel = _persistentConnection.CreateModel())
                 {
                     channel.QueueBind(queue: _queueName,
                                       exchange: brokerName,
                                       routingKey: eventName);
-                }
+                }*/
             }
         }
 
@@ -213,14 +215,16 @@ namespace EventBusRabbitMQ
 
             var channel = _persistentConnection.CreateModel();
 
-            channel.ExchangeDeclare(exchange: brokerName,
+            /*
+             * TODO move to external function
+             * channel.ExchangeDeclare(exchange: brokerName,
                                     type: exchangeMode);
 
             channel.QueueDeclare(queue: _queueName,
                                  durable: true,
                                  exclusive: false,
                                  autoDelete: false,
-                                 arguments: null);
+                                 arguments: null);*/
 
             channel.CallbackException += (sender, ea) =>
             {

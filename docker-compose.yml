@@ -80,7 +80,7 @@ services:
     environment:
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
-        - MONGODB_CONNECTION="mongodb://root:rootPassword@localhost:27017"
+        - MONGODB_CONNECTION=mongodb://root:rootPassword@host.docker.internal:27017/NewsGroup
         - MONGODB_DATABASE="NewsGroup"
         - MONGODB_COLLECTION_NAME="News"
         - RABBITMQ_HOST=host.docker.internal

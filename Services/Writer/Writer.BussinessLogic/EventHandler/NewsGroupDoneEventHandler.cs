@@ -33,17 +33,16 @@ namespace Writer.BussinessLogic.EventHandler
             ArticleGroup newGroup = new ArticleGroup()
             {
                 CreateDate = DateTime.Now,
-                Id = @event.Guid,
                 Similar = new Article()
                 {
-                    Id = @event.Guid,
-                    Description = @event.Description,
-                    Link = @event.Description,
-                    Picture = @event.Picture,
-                    PublishDate = @event.PublishDate,
-                    Title = @event.Title,
-                    FeedName = @event.FeedName,
-                    FeedPicture = @event.FeedPicture
+                    NewsID = @event.Id.ToString(),
+                    Description = @event.NewsItem.Description,
+                    Link = @event.NewsItem.Description,
+                    Picture = @event.NewsItem.Picture,
+                    PublishDate = @event.NewsItem.PublishDate,
+                    Title = @event.NewsItem.Title,
+                    FeedName = @event.NewsItem.FeedName,
+                    FeedPicture = @event.NewsItem.FeedPicture
                 }
             };
             _mongoService.AddArticleGroup(newGroup);

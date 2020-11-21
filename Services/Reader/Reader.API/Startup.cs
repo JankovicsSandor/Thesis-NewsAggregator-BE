@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Reader.DataAccess.Database;
 
 namespace Reader.API
 {
@@ -25,6 +26,8 @@ namespace Reader.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IMongoDatabaseService, MongoDatabaseService>();
+
             services.AddHealthChecks();
             services.AddControllers().AddNewtonsoftJson();
         }
@@ -36,6 +39,8 @@ namespace Reader.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UsePathBase("/api/news/read");
 
             app.UseHttpsRedirection();
 

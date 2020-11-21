@@ -28,13 +28,93 @@
       "user": "client",
       "vhost": "/",
       "configure": ".*",
-      "write": ".*",
-      "read": ".*"
+      "write": "^[news_|News].*",
+      "read": "^[news_|News].*"
     }
   ],
   "parameters": [],
   "policies": [],
-  "exchanges": [],
-  "queues": [],
-  "bindings": []
+  "queues": [
+    {
+      "name": "NewsArticlesSim",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "NewsGroupDone",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "NewsArticlesDb",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "news_aggregator_bus",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "news_article_exchange",
+      "vhost": "/",
+      "type": "fanout",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "news_aggregator_bus",
+      "vhost": "/",
+      "destination": "news_article_exchange",
+      "destination_type": "exchange",
+      "routing_key": "NewsArticles",
+      "arguments": {}
+    },
+    {
+      "source": "news_aggregator_bus",
+      "vhost": "/",
+      "destination": "NewsGroupDone",
+      "destination_type": "queue",
+      "routing_key": "NewsGroupDoneEvent",
+      "arguments": {}
+    },
+    {
+      "source": "news_article_exchange",
+      "vhost": "/",
+      "destination": "NewsArticlesDb",
+      "destination_type": "queue",
+      "routing_key": "AddNewArticleEvent",
+      "arguments": {}
+    },
+    {
+      "source": "news_article_exchange",
+      "vhost": "/",
+      "destination": "NewsArticlesSim",
+      "destination_type": "queue",
+      "routing_key": "AddNewArticleEvent",
+      "arguments": {}
+    }
+  ]
 }

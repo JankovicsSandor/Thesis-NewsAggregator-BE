@@ -26,14 +26,16 @@ def newMessage(ch, method, properties, body):
     counter=counter+1
     print(" [x] %r" % json.loads(body.decode()))
     #print(" [x] %r" % similarityManager.getMostSimilarNews(body.summary))
-    eventBroker.sendEvent('NewsGroupDone',NewsGroupDoneEvent(json.loads(body.decode()),[]))
+    # TODO get most similar articles
+    # TODO preprocess article
+    eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(json.loads(body.decode()),[]))
 
 @app.teardown_request
 def checkin_db(exc):
     if eventBroker:
         eventBroker.closeConnection()
 
-eventBroker.registerToEvent('NewsArticles','AddNewArticleEvent', newMessage)  
+eventBroker.registerToEvent('NewsArticlesSim','AddNewArticleEvent', newMessage)  
 if __name__ == '__main__':
     app.run()
 

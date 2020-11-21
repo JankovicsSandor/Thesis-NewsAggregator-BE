@@ -8,7 +8,6 @@ namespace Writer.DataAccess.Database
     public partial class Article
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
         [BsonElement("Title")]
@@ -40,5 +39,10 @@ namespace Writer.DataAccess.Database
         [BsonElement("FeedPicture")]
         [BsonRepresentation(BsonType.String)]
         public string FeedPicture { get; set; }
+
+
+        [BsonElement("NewsId")]
+        [BsonRepresentation(BsonType.String)]
+        public string NewsID { get; set; }
     }
 }

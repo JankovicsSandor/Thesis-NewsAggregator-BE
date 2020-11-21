@@ -1,11 +1,10 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Reader.DataAccess.Database;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace News.DataAccess.Database
+namespace Reader.DataAccess.Database
 {
     public class ArticleGroup
     {
