@@ -16,5 +16,8 @@ namespace Reader.DataAccess.Database
         public Article Similar { get; set; }
 
         public DateTime CreateDate { get; set; }
+
+        [BsonElement("LatestDate")]
+        public DateTime LatestDate { get; set; }
     }
 }
