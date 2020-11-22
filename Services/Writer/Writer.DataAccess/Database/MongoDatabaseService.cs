@@ -44,5 +44,10 @@ namespace Writer.DataAccess.Database
         {
             return _articleGroup.Find(article => true).ToList();
         }
+
+        public List<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate)
+        {
+            return _articleGroup.Find(article => article.LatestArticleDate >= minDate).ToList();
+        }
     }
 }

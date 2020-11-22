@@ -10,12 +10,19 @@ namespace News.DataAccess.Database
     public class ArticleGroup
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public ObjectId _id { get; set; }
 
         [BsonElement("Similar")]
-        public Article Similar { get; set; }
+        public IEnumerable<Article> Similar { get; set; }
 
         public DateTime CreateDate { get; set; }
+
+        [BsonElement("LatestDate")]
+        public DateTime LatestArticleDate { get; set; }
+
+        public ArticleGroup()
+        {
+            _id = ObjectId.GenerateNewId();
+        }
     }
 }

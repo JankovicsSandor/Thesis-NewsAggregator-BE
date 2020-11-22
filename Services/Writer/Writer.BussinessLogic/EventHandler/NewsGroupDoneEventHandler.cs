@@ -3,6 +3,7 @@ using EventBusRabbitMQ.Abstractions;
 using News.DataAccess.Database;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Writer.BussinessLogic.ExternalDataProvider.NewsData;
@@ -33,21 +34,25 @@ namespace Writer.BussinessLogic.EventHandler
             ArticleGroup newGroup = new ArticleGroup()
             {
                 CreateDate = DateTime.Now,
-                Similar = new Article()
-                {
-                    NewsID = @event.Id.ToString(),
-                    Description = @event.NewsItem.Description,
-                    Link = @event.NewsItem.Description,
-                    Picture = @event.NewsItem.Picture,
-                    PublishDate = @event.NewsItem.PublishDate,
-                    Title = @event.NewsItem.Title,
-                    FeedName = @event.NewsItem.FeedName,
-                    FeedPicture = @event.NewsItem.FeedPicture
+                Similar = new List<Article>() { 
+                new Article()
+                    {
+                        NewsID = @event.Id.ToString(),
+                        Description = @event.NewsItem.Description,
+                        Link = @event.NewsItem.Description,
+                        Picture = @event.NewsItem.Picture,
+                        PublishDate = @event.NewsItem.PublishDate,
+                        Title = @event.NewsItem.Title,
+                        FeedName = @event.NewsItem.FeedName,
+                        FeedPicture = @event.NewsItem.FeedPicture
+                    }
                 }
             };
+
+            newGroup.LatestArticleDate = newGroup.Similar.Max(e => e.PublishDate);
             _mongoService.AddArticleGroup(newGroup);
 
-            return null;
+            return Task.FromResult(@event.NewsItem.Id);
         }
     }
 }
