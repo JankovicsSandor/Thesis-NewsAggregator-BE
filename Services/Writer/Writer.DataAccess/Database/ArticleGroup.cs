@@ -3,9 +3,8 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Writer.DataAccess.Database;
 
-namespace News.DataAccess.Database
+namespace Writer.DataAccess.Database
 {
     public class ArticleGroup
     {
@@ -13,7 +12,7 @@ namespace News.DataAccess.Database
         public ObjectId _id { get; set; }
 
         [BsonElement("Similar")]
-        public IEnumerable<Article> Similar { get; set; }
+        public IList<Article> Similar { get; set; }
 
         public DateTime CreateDate { get; set; }
 

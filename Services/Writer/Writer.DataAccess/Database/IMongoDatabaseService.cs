@@ -1,4 +1,4 @@
-﻿using News.DataAccess.Database;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Writer.DataAccess.Database
@@ -7,5 +7,7 @@ namespace Writer.DataAccess.Database
     {
         void AddArticleGroup(ArticleGroup newGroup);
         List<ArticleGroup> GetAllArticleGroup();
+        List<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate);
+        void UpdateArticleGroup(ArticleGroup updatedGroup);
     }
 }

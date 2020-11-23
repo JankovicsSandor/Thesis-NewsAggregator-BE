@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using News.DataAccess.Database;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -37,7 +36,20 @@ namespace Writer.DataAccess.Database
 
         public void AddArticleGroup(ArticleGroup newGroup)
         {
-            _articleGroup.InsertOne(newGroup);
+            if (newGroup != null)
+            {
+                _articleGroup.InsertOne(newGroup);
+            }
+
+        }
+
+        public void UpdateArticleGroup(ArticleGroup updatedGroup)
+        {
+            if (updatedGroup != null)
+            {
+                _articleGroup.ReplaceOne(article => article._id == updatedGroup._id, updatedGroup);
+            }
+
         }
 
         public List<ArticleGroup> GetAllArticleGroup()

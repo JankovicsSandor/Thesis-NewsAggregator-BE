@@ -8,6 +8,6 @@ namespace Writer.Shared.Events
     public class NewsGroupDoneEvent : IntegrationEvent
     {
         public NewsGroupDoneNewsItem NewsItem { get; set; }
-        public IEnumerable<string> Similarities { get; set; }
+        public IList<string> Similarities { get; set; }
     }
 }
