@@ -43,6 +43,19 @@ services:
         - "10005:80"
     volumes:
         - ./ssl/webserver.pfx:/https/webserver.pfx
+#  collector.api:
+#    image: ${DOCKER_REGISTRY-}collectorapi
+#    environment:
+#        - RABBITMQ_USER=admin
+#        - RABBITMQ_PASS=adminPw
+#        - RABBITMQ_HOST=rabbitmq
+#    build:
+#      context: ./Services/NewsSimilarity/
+#      dockerfile: ./Dockerfile
+#    volumes:
+#        - ./model/doc2vec.bin:/var/similarity/doc2vec.bin
+#    ports:
+#      - "10015:5000"
   news.api:
     image: ${DOCKER_REGISTRY-}newsapi
     environment:

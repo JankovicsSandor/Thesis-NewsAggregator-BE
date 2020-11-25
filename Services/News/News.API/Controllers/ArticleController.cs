@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using News.BussinessLogic.ArticleResource.AddArticle;
@@ -25,6 +26,15 @@ namespace News.API.Controllers
         public async Task<IActionResult> GetArticles([FromQuery] GetArticleCommand command)
         {
             return Ok(await _meditor.Send(command));
+        }
+
+        [HttpGet("today")]
+        public async Task<IActionResult> GetTodayNewsArticles([FromQuery] GetArticleCommand command)
+        {
+            return Ok(await _meditor.Send(new GetArticleCommand()
+            {
+                MinDate = DateTime.Now.Date
+            }));
         }
 
 
