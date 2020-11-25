@@ -6,8 +6,8 @@ namespace Writer.DataAccess.Database
     public interface IMongoDatabaseService
     {
         void AddArticleGroup(ArticleGroup newGroup);
-        List<ArticleGroup> GetAllArticleGroup();
-        List<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate);
+        IList<ArticleGroup> GetAllArticleGroup();
+        IList<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate);
         void UpdateArticleGroup(ArticleGroup updatedGroup);
     }
 }

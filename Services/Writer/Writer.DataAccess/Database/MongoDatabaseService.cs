@@ -52,12 +52,12 @@ namespace Writer.DataAccess.Database
 
         }
 
-        public List<ArticleGroup> GetAllArticleGroup()
+        public IList<ArticleGroup> GetAllArticleGroup()
         {
             return _articleGroup.Find(article => true).ToList();
         }
 
-        public List<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate)
+        public IList<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate)
         {
             return _articleGroup.Find(article => article.LatestArticleDate >= minDate).ToList();
         }

@@ -33,7 +33,7 @@ namespace Writer.BussinessLogic.EventHandler
             //
             DateTime minGroupDate = DateTime.Now.Date.AddDays(-2);
 
-            List<ArticleGroup> articleGroups = _mongoService.GetArticleGroupsFromDateTime(minGroupDate);
+            IList<ArticleGroup> articleGroups = _mongoService.GetArticleGroupsFromDateTime(minGroupDate);
             // TODO handle the similarities
             bool articleInsertedToGroup = false;
             int i = 0;
@@ -44,27 +44,31 @@ namespace Writer.BussinessLogic.EventHandler
                 {
                     actualSimilarText = @event.Similarities[i];
                     GetNewsArticleByDescriptionResponse similarArticle = await _newsClient.GetArticleFromDescription(actualSimilarText);
-                    ArticleGroup groupContainArticle = articleGroups.Find(e => e.Similar.Any(article => article.NewsID == similarArticle.Guid));
-                    // The new article is found in the last two days article groups.
-                    // Have to add it as a similar article
-                    if (groupContainArticle != null)
+                    if (similarArticle != null)
                     {
-                        Article newArticle = new Article()
+                        ArticleGroup groupContainArticle = articleGroups.FirstOrDefault(e => e.Similar.Any(article => article.NewsID == similarArticle.Guid));
+                        // The new article is found in the last two days article groups.
+                        // Have to add it as a similar article
+                        if (groupContainArticle != null)
                         {
-                            NewsID = @event.Id.ToString(),
-                            Description = @event.NewsItem.Description,
-                            Link = @event.NewsItem.Description,
-                            Picture = @event.NewsItem.Picture,
-                            PublishDate = @event.NewsItem.PublishDate,
-                            Title = @event.NewsItem.Title,
-                            FeedName = @event.NewsItem.FeedName,
-                            FeedPicture = @event.NewsItem.FeedPicture
-                        };
-                        groupContainArticle.Similar.Add(newArticle);
-                        groupContainArticle.LatestArticleDate = @event.NewsItem.PublishDate;
-                        _mongoService.UpdateArticleGroup(groupContainArticle);
-                        articleInsertedToGroup = true;
+                            Article newArticle = new Article()
+                            {
+                                NewsID = @event.Id.ToString(),
+                                Description = @event.NewsItem.Description,
+                                Link = @event.NewsItem.Description,
+                                Picture = @event.NewsItem.Picture,
+                                PublishDate = @event.NewsItem.PublishDate,
+                                Title = @event.NewsItem.Title,
+                                FeedName = @event.NewsItem.FeedName,
+                                FeedPicture = @event.NewsItem.FeedPicture
+                            };
+                            groupContainArticle.Similar.Add(newArticle);
+                            groupContainArticle.LatestArticleDate = @event.NewsItem.PublishDate;
+                            _mongoService.UpdateArticleGroup(groupContainArticle);
+                            articleInsertedToGroup = true;
+                        }
                     }
+
                     i++;
                 }
             }
