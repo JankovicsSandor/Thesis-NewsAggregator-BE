@@ -4,6 +4,7 @@ using News.Shared.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,6 +39,25 @@ namespace News.DataAccess.Repository
                         Link = articles.Link,
                         PublishDate = articles.PublishDate,
                         Title = articles.Title
+                    });
+        }
+
+        public IQueryable<NewsResponse> GetArticleFromQuery(Expression<Func<Article, bool>> articleQuery)
+        {
+            return (from article in _context.Article.Where(articleQuery)
+                    join author in _context.Feed.Where(e => e.Active) on article.FeedId equals author.Id
+                    orderby article.PublishDate descending
+                    select new NewsResponse()
+                    {
+                        Author = new NewsAuthorResponse()
+                        {
+                            Picture = author.Picture
+                        },
+                        Picture = article.Picture,
+                        Link = article.Link,
+                        PublishDate = article.PublishDate,
+                        Description = article.Description,
+                        Title = article.Title
                     });
         }
     }

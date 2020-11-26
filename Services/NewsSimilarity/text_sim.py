@@ -1,12 +1,32 @@
 import gensim.models as g
 import re
+import os
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer,WordNetLemmatizer
-
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+import requests
+from newsItemVector import NewsItemVector
 
 class TextSimilarity(object):
-    
+
+   newsDict=[]
+
+   def __init__(self):
+      self.getTodayArticles()
+
+   def getTodayArticles(self):
+
+      todayArticles = requests.get(os.environ['NEWS_API'] + "article/today").json()
+      for articleDescription in todayArticles:
+         processedText = self.preprocessText(articleDescription)
+
+         params = {"q": processedText, "lang": "en"}
+         textVectorRequest = requests.get(os.environ['LASER_API'] + "vectorize", params=params).json()
+         
+         self.newsDict.append(NewsItemVector(articleDescription,processedText,textVectorRequest["embedding"]))
+      
+
+
    def getMostSimilarNews(self, article):
       model = g.Doc2Vec.load("/var/similarity/doc2vec.bin")
 

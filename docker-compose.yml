@@ -105,4 +105,12 @@ services:
         - ./ssl/webserver.pfx:/https/webserver.pfx
     ports:
         - "10020:80"
+  laser.api:
+    image: ${DOCKER_REGISTRY-}laserapi
+    build:
+      context: .
+      dockerfile: Services/LASER/Dockerfile
+    ports:
+        - "10025:80"
+        
 

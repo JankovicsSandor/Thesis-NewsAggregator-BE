@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using News.BussinessLogic.ArticleResource.AddArticle;
-using News.BussinessLogic.ArticleResource.GetArticle;
 using News.BussinessLogic.GetArticle;
+using News.BussinessLogic.TodayArticle;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,19 +20,12 @@ namespace News.API.Controllers
         }
 
 
-        [HttpGet("")]
-        public async Task<IActionResult> GetArticles([FromQuery] GetArticleCommand command)
-        {
-            return Ok(await _meditor.Send(command));
-        }
 
         [HttpGet("today")]
-        public async Task<IActionResult> GetTodayNewsArticles([FromQuery] GetArticleCommand command)
+        public async Task<IActionResult> GetTodayNewsArticles()
         {
-            return Ok(await _meditor.Send(new GetArticleCommand()
-            {
-                MinDate = DateTime.Now.Date
-            }));
+            await _meditor.Send(new GetTodayArticleListQuery());
+            return Ok();
         }
 
 

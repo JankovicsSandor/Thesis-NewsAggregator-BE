@@ -1,17 +1,14 @@
-﻿using MediatR;
-using News.Shared.Response;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace News.BussinessLogic.ArticleResource.GetArticle
+namespace News.Shared.Query
 {
-    public class GetArticleCommand : IRequest<ArticleListResponse>
+    public class ArticleQueryModel
     {
         public DateTime MinDate { get; set; }
         public DateTime MaxDate { get; set; }
         public string Contains { get; set; }
         public string Agency { get; set; }
-        public int Page { get; set; }
     }
 }

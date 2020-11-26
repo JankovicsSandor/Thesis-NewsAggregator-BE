@@ -1,10 +1,8 @@
 ﻿using NewsAggregator.Shared.Predicate;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using News.DataAccess.Database;
-using System.Text;
-using News.BussinessLogic.ArticleResource.GetArticle;
+using News.Shared.Query;
 
 namespace News.BussinessLogic.ArticleResource
 {
@@ -39,28 +37,27 @@ namespace News.BussinessLogic.ArticleResource
         {
             return predicate;
         }
-
-
-        public static class ArticlePredicateQueryBuilder
+      
+    }
+    public static class ArticlePredicateQueryBuilder
+    {
+        public static Expression<Func<Article, bool>> GetArticleQuery(ArticleQueryModel model)
         {
-            public static Expression<Func<Article, bool>> GetArticleQuery(GetArticleCommand model)
+            var config = new ArticlePredicateBuilder();
+            if (!string.IsNullOrEmpty(model.Contains))
             {
-                var config = new ArticlePredicateBuilder();
-                if (!string.IsNullOrEmpty(model.Contains))
-                {
-                    config.AddContains(model.Contains);
-                }
-                if (model.MaxDate != DateTime.MinValue)
-                {
-                    config.AddMaxDate(model.MaxDate);
-                }
-                if (model.MinDate != DateTime.MinValue)
-                {
-                    config.AddMinDate(model.MinDate);
-                }
-
-                return config.Build();
+                config.AddContains(model.Contains);
             }
+            if (model.MaxDate != DateTime.MinValue)
+            {
+                config.AddMaxDate(model.MaxDate);
+            }
+            if (model.MinDate != DateTime.MinValue)
+            {
+                config.AddMinDate(model.MinDate);
+            }
+
+            return config.Build();
         }
     }
 }
