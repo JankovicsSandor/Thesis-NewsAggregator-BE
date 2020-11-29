@@ -1,5 +1,6 @@
 class NewsItemVector(object):
 
+    originalDescription=""
     newsItem=""
     vector = ""
    

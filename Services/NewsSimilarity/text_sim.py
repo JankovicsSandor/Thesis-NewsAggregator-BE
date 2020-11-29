@@ -6,6 +6,8 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer, WordNetLemmatizer
 import requests
 from newsItemVector import NewsItemVector
+from scipy.spatial import distance
+import json
 
 class TextSimilarity(object):
 
@@ -15,24 +17,34 @@ class TextSimilarity(object):
       self.getTodayArticles()
 
    def getTodayArticles(self):
-
       todayArticles = requests.get(os.environ['NEWS_API'] + "article/today").json()
       for articleDescription in todayArticles:
          processedText = self.preprocessText(articleDescription)
 
-         params = {"q": processedText, "lang": "en"}
-         textVectorRequest = requests.get(os.environ['LASER_API'] + "vectorize", params=params).json()
+         embeddingResult=self.createWordVectorFromText(processedText)
          
-         self.newsDict.append(NewsItemVector(articleDescription,processedText,textVectorRequest["embedding"]))
+         self.newsDict.append(NewsItemVector(articleDescription,processedText,embeddingResult))
       
 
 
-   def getMostSimilarNews(self, article):
-      model = g.Doc2Vec.load("/var/similarity/doc2vec.bin")
-
-      processesedText=self.preprocessText(article)
-      infer_vector = model.infer_vector(processesedText)
-      return model.docvecs.most_similar([infer_vector], topn=5)
+   def getMostSimilarNews(self, articleDescription):
+      maxSimilarity = -45
+      similarArticleDescription=""
+      newItemProcessedText = self.preprocessText(articleDescription)
+      newArticleVector=self.createWordVectorFromText(newItemProcessedText)
+      for todayArticle in self.newsDict:    
+         cosine_similarity = 1 - distance.cosine(newArticleVector, todayArticle.vector)
+         if cosine_similarity > maxSimilarity:
+            maxSimilarity = cosine_similarity
+            similarArticleDescription = todayArticle.originalDescription
+      return similarArticleDescription
+      
+            
+   def createWordVectorFromText(self, processedText):
+      params = {"q": processedText, "lang": "en"}
+      requestResult = requests.get(os.environ['LASER_API'] + "vectorize", params=params).json()
+      
+      return json.loads(requestResult["embedding"])
    
    def preprocessText(self, text):
       # convert the text to lowercase

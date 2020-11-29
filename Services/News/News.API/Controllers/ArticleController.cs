@@ -24,8 +24,8 @@ namespace News.API.Controllers
         [HttpGet("today")]
         public async Task<IActionResult> GetTodayNewsArticles()
         {
-            await _meditor.Send(new GetTodayArticleListQuery());
-            return Ok();
+            
+            return Ok(await _meditor.Send(new GetTodayArticleListQuery()));
         }
 
 

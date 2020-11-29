@@ -49,6 +49,8 @@ services:
 #        - RABBITMQ_USER=admin
 #        - RABBITMQ_PASS=adminPw
 #        - RABBITMQ_HOST=rabbitmq
+#        - NEWS_API:http://localhost:10010/api/news/
+#        - LASER_API=http://localhost:10025/
 #    build:
 #      context: ./Services/NewsSimilarity/
 #      dockerfile: ./Dockerfile
@@ -109,7 +111,7 @@ services:
     image: ${DOCKER_REGISTRY-}laserapi
     build:
       context: .
-      dockerfile: Services/LASER/Dockerfile
+      dockerfile: Services/LASER/docker/Dockerfile
     ports:
         - "10025:80"
         

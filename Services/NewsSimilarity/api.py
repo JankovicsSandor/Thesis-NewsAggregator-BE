@@ -23,12 +23,13 @@ counter=1
 def newMessage(ch, method, properties, body):
     global counter
     print(counter)
-    counter=counter+1
-    print(" [x] %r" % json.loads(body.decode()))
+    counter = counter + 1
+    eventBody=json.loads(body.decode())
+    print(" [x] %r" % eventBody)
     #print(" [x] %r" % similarityManager.getMostSimilarNews(body.summary))
     # TODO get most similar articles
-    # TODO preprocess article
-    eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(json.loads(body.decode()),[]))
+    todaySimilarity=similarityManager.getMostSimilarNews(eventBody.description)
+    eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(json.loads(body.decode()),[todaySimilarity]))
 
 @app.teardown_request
 def checkin_db(exc):
