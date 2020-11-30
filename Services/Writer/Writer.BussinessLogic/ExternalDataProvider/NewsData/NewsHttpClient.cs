@@ -28,7 +28,7 @@ namespace Writer.BussinessLogic.ExternalDataProvider.NewsData
 
         public async Task<GetNewsArticleByDescriptionResponse> GetArticleFromDescription(string description)
         {
-            HttpResponseMessage actualArticleRequest = await _client.GetAsync("article/byDescription");
+            HttpResponseMessage actualArticleRequest = await _client.GetAsync($"article/byDescription?description={description}");
             string content = await actualArticleRequest.Content.ReadAsStringAsync();
             if (!actualArticleRequest.IsSuccessStatusCode)
             {

@@ -1,6 +1,8 @@
 import gensim.models as g
 import re
 import os
+import nltk
+nltk.download('wordnet')
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer, WordNetLemmatizer
@@ -37,6 +39,8 @@ class TextSimilarity(object):
          if cosine_similarity > maxSimilarity:
             maxSimilarity = cosine_similarity
             similarArticleDescription = todayArticle.originalDescription
+      self.newsDict.append(NewsItemVector(articleDescription,newItemProcessedText,newArticleVector))
+      print("Similarity: "+ str(maxSimilarity))
       return similarArticleDescription
       
             
@@ -44,7 +48,7 @@ class TextSimilarity(object):
       params = {"q": processedText, "lang": "en"}
       requestResult = requests.get(os.environ['LASER_API'] + "vectorize", params=params).json()
       
-      return json.loads(requestResult["embedding"])
+      return requestResult["embedding"][0]
    
    def preprocessText(self, text):
       # convert the text to lowercase
@@ -64,10 +68,10 @@ class TextSimilarity(object):
       convertedString = self.removeStopwords(convertedString)
 
       # stemming text
-      convertedString = self.stemText(convertedString)
+      #convertedString = self.stemText(convertedString)
 
       # lemmanize text
-      convertedString = self.lemmanizeText(convertedString)
+     # convertedString = self.lemmanizeText(convertedString)
 
       return convertedString
    

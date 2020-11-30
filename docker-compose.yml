@@ -43,21 +43,6 @@ services:
         - "10005:80"
     volumes:
         - ./ssl/webserver.pfx:/https/webserver.pfx
-#  collector.api:
-#    image: ${DOCKER_REGISTRY-}collectorapi
-#    environment:
-#        - RABBITMQ_USER=admin
-#        - RABBITMQ_PASS=adminPw
-#        - RABBITMQ_HOST=rabbitmq
-#        - NEWS_API:http://localhost:10010/api/news/
-#        - LASER_API=http://localhost:10025/
-#    build:
-#      context: ./Services/NewsSimilarity/
-#      dockerfile: ./Dockerfile
-#    volumes:
-#        - ./model/doc2vec.bin:/var/similarity/doc2vec.bin
-#    ports:
-#      - "10015:5000"
   news.api:
     image: ${DOCKER_REGISTRY-}newsapi
     environment:
@@ -110,9 +95,22 @@ services:
   laser.api:
     image: ${DOCKER_REGISTRY-}laserapi
     build:
-      context: .
-      dockerfile: Services/LASER/docker/Dockerfile
+      context: ./Services/LASER/docker
+      dockerfile: ./Dockerfile
     ports:
         - "10025:80"
+  collector.api:
+    image: ${DOCKER_REGISTRY-}collectorapi
+    environment:
+        - RABBITMQ_USER=client
+        - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
+        - RABBITMQ_HOST=host.docker.internal
+        - NEWS_API=http://host.docker.internal:10010/api/news/
+        - LASER_API=http://host.docker.internal:10025/
+    build:
+      context: ./Services/NewsSimilarity
+      dockerfile: ./Dockerfile
+    ports:
+      - "10040:5000"
         
 

@@ -1,6 +1,4 @@
 flask
-mysql.connector
 pika
-scikit-learn
 nltk
 scipy

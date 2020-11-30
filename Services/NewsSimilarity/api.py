@@ -28,8 +28,12 @@ def newMessage(ch, method, properties, body):
     print(" [x] %r" % eventBody)
     #print(" [x] %r" % similarityManager.getMostSimilarNews(body.summary))
     # TODO get most similar articles
-    todaySimilarity=similarityManager.getMostSimilarNews(eventBody.description)
-    eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(json.loads(body.decode()),[todaySimilarity]))
+    todaySimilarity = similarityManager.getMostSimilarNews(eventBody["Description"])
+    if (todaySimilarity == ""):
+        eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(json.loads(body.decode()),[])) 
+    else:
+        eventBroker.sendEvent('NewsGroupDoneEvent',NewsGroupDoneEvent(json.loads(body.decode()),[todaySimilarity]))
+    
 
 @app.teardown_request
 def checkin_db(exc):
