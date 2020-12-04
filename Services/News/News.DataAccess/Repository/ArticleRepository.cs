@@ -25,9 +25,9 @@ namespace News.DataAccess.Repository
             await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<NewsItemResponse> GetArticleByDescription(string description)
+        public IEnumerable<NewsItemResponse> GetArticleByGuid(string guid)
         {
-            return (from articles in _context.Article.Where(e => e.Description == description)
+            return (from articles in _context.Article.Where(e => e.Guid == guid)
                     join feed in _context.Feed on articles.FeedId equals feed.Id
                     select new NewsItemResponse()
                     {
@@ -55,10 +55,11 @@ namespace News.DataAccess.Repository
                         },
                         Picture = article.Picture,
                         Link = article.Link,
+                        Guid = article.Guid,
                         PublishDate = article.PublishDate,
                         Description = article.Description,
                         Title = article.Title
-                    });
+                    }) ;
         }
     }
 }

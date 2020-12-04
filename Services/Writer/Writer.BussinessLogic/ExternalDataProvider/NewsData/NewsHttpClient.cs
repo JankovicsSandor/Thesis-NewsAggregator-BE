@@ -26,9 +26,9 @@ namespace Writer.BussinessLogic.ExternalDataProvider.NewsData
             _logger = logger;
         }
 
-        public async Task<GetNewsArticleByDescriptionResponse> GetArticleFromDescription(string description)
+        public async Task<GetNewsArticleByDescriptionResponse> GetArticleFromGUID(string description)
         {
-            HttpResponseMessage actualArticleRequest = await _client.GetAsync($"article/byDescription?description={description}");
+            HttpResponseMessage actualArticleRequest = await _client.GetAsync($"article/byGuid?guid={description}");
             string content = await actualArticleRequest.Content.ReadAsStringAsync();
             if (!actualArticleRequest.IsSuccessStatusCode)
             {

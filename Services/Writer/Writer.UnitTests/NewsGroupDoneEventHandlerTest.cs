@@ -38,7 +38,7 @@ namespace Writer.UnitTests
             {
                 NewsItem = new NewsGroupDoneNewsItem()
             });
-            newsHttpClient.Verify(e => e.GetArticleFromDescription(It.IsAny<string>()), Times.Never);
+            newsHttpClient.Verify(e => e.GetArticleFromGUID(It.IsAny<string>()), Times.Never);
             mongoService.Verify(e => e.AddArticleGroup(It.IsAny<ArticleGroup>()), Times.Once);
         }
 
@@ -50,19 +50,16 @@ namespace Writer.UnitTests
             Mock<IMongoDatabaseService> mongoService = new Mock<IMongoDatabaseService>();
 
             mongoService.Setup(e => e.GetArticleGroupsFromDateTime(It.IsAny<DateTime>())).Returns(ArticleGroupTestData.GetArticleGroupList());
-            newsHttpClient.Setup(e => e.GetArticleFromDescription(It.IsAny<string>())).ReturnsAsync(new GetNewsArticleByDescriptionResponse() {Guid= "aaaa-4444-aaaa" });
+            newsHttpClient.Setup(e => e.GetArticleFromGUID(It.IsAny<string>())).ReturnsAsync(new GetNewsArticleByDescriptionResponse() {Guid= "aaaa-4444-aaaa" });
 
             NewsGroupDoneEventHandler handler = new NewsGroupDoneEventHandler(newsHttpClient.Object, mongoService.Object);
 
             await handler.Handle(new NewsGroupDoneEvent()
             {
                 NewsItem = new NewsGroupDoneNewsItem(),
-                Similarities = new List<string>()
-                {
-                    "Item2"
-                }
+                Similarity ="Item2"
             });
-            newsHttpClient.Verify(e => e.GetArticleFromDescription(It.IsAny<string>()), Times.Once);
+            newsHttpClient.Verify(e => e.GetArticleFromGUID(It.IsAny<string>()), Times.Once);
             mongoService.Verify(e => e.AddArticleGroup(It.IsAny<ArticleGroup>()), Times.Never);
             mongoService.Verify(e => e.UpdateArticleGroup(It.IsAny<ArticleGroup>()), Times.Once);
         }
@@ -75,19 +72,17 @@ namespace Writer.UnitTests
             Mock<IMongoDatabaseService> mongoService = new Mock<IMongoDatabaseService>();
 
             mongoService.Setup(e => e.GetArticleGroupsFromDateTime(It.IsAny<DateTime>())).Returns(ArticleGroupTestData.GetArticleGroupList());
-            newsHttpClient.Setup(e => e.GetArticleFromDescription(It.IsAny<string>())).ReturnsAsync(new GetNewsArticleByDescriptionResponse() { Guid = "bbbb-4444-bbbb" });
+            newsHttpClient.Setup(e => e.GetArticleFromGUID(It.IsAny<string>())).ReturnsAsync(new GetNewsArticleByDescriptionResponse() { Guid = "bbbb-4444-bbbb" });
 
             NewsGroupDoneEventHandler handler = new NewsGroupDoneEventHandler(newsHttpClient.Object, mongoService.Object);
 
             await handler.Handle(new NewsGroupDoneEvent()
             {
                 NewsItem = new NewsGroupDoneNewsItem(),
-                Similarities = new List<string>()
-                {
-                    "Item2"
-                }
-            });
-            newsHttpClient.Verify(e => e.GetArticleFromDescription(It.IsAny<string>()), Times.Once);
+                Similarity = "Item2"
+
+            }) ;
+            newsHttpClient.Verify(e => e.GetArticleFromGUID(It.IsAny<string>()), Times.Once);
             mongoService.Verify(e => e.AddArticleGroup(It.IsAny<ArticleGroup>()), Times.Once);
             mongoService.Verify(e => e.UpdateArticleGroup(It.IsAny<ArticleGroup>()), Times.Never);
         }

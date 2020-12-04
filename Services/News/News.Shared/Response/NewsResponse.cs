@@ -11,6 +11,7 @@ namespace News.Shared.Response
         public DateTime PublishDate { get; set; }
         public string Picture { get; set; }
         public string Link { get; set; }
+        public string Guid { get; set; }
         public NewsAuthorResponse Author { get; set; }
     }
 }

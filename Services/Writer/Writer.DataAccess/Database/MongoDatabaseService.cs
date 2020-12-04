@@ -1,6 +1,8 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Writer.DataAccess.Database
@@ -60,6 +62,12 @@ namespace Writer.DataAccess.Database
         public IList<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate)
         {
             return _articleGroup.Find(article => article.LatestArticleDate >= minDate).ToList();
+        }
+
+        public Article GetArticleFromGUID(string guid)
+        {
+            ArticleGroup articleGroup = _articleGroup.Find(article => article.Similar.Any(e => e.NewsID == guid)).FirstOrDefault();
+            return articleGroup?.Similar.FirstOrDefault(e => e.NewsID == guid);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace News.DataAccess.Repository
     public interface IArticleRepository
     {
         Task AddNewArticle(Article newArticle);
-        IEnumerable<NewsItemResponse> GetArticleByDescription(string description);
+        IEnumerable<NewsItemResponse> GetArticleByGuid(string description);
         IQueryable<NewsResponse> GetArticleFromQuery(Expression<Func<Article, bool>> articleQuery);
     }
 }

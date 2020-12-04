@@ -20,27 +20,31 @@ class TextSimilarity(object):
 
    def getTodayArticles(self):
       todayArticles = requests.get(os.environ['NEWS_API'] + "article/today").json()
-      for articleDescription in todayArticles:
-         processedText = self.preprocessText(articleDescription)
+      for articleItem in todayArticles:
+         processedText = self.preprocessText(articleItem["description"])
 
          embeddingResult=self.createWordVectorFromText(processedText)
          
-         self.newsDict.append(NewsItemVector(articleDescription,processedText,embeddingResult))
-      
+         self.newsDict.append(NewsItemVector(articleItem["guid"],articleItem["description"],processedText,embeddingResult))
+       
 
 
-   def getMostSimilarNews(self, articleDescription):
+   def getMostSimilarNews(self, guid,articleDescription):
       maxSimilarity = -45
-      similarArticleDescription=""
+      similarArticleDescription = ""
+      originalDescription=""
       newItemProcessedText = self.preprocessText(articleDescription)
       newArticleVector=self.createWordVectorFromText(newItemProcessedText)
       for todayArticle in self.newsDict:    
          cosine_similarity = 1 - distance.cosine(newArticleVector, todayArticle.vector)
          if cosine_similarity > maxSimilarity:
             maxSimilarity = cosine_similarity
-            similarArticleDescription = todayArticle.originalDescription
-      self.newsDict.append(NewsItemVector(articleDescription,newItemProcessedText,newArticleVector))
-      print("Similarity: "+ str(maxSimilarity))
+            similarArticleDescription = todayArticle.guid
+            originalDescription=todayArticle.origText
+      self.newsDict.append(NewsItemVector(guid,articleDescription,newItemProcessedText,newArticleVector))
+      print("Article: "+ articleDescription)
+      print("Similarity: " + str(maxSimilarity))
+      print("Similar: "+ originalDescription)
       return similarArticleDescription
       
             

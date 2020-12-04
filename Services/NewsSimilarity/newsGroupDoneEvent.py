@@ -1,9 +1,9 @@
 class NewsGroupDoneEvent(object):
 
     newsItem=""
-    similarities = []
+    similarity = []
    
     
-    def __init__(self, newsItem,similarities):
+    def __init__(self, newsItem,similarity):
         self.newsItem=newsItem
-        self.similarities = similarities
+        self.similarity = similarity

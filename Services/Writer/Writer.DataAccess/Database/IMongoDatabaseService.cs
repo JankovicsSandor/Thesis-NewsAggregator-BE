@@ -7,6 +7,7 @@ namespace Writer.DataAccess.Database
     {
         void AddArticleGroup(ArticleGroup newGroup);
         IList<ArticleGroup> GetAllArticleGroup();
+        Article GetArticleFromGUID(string guid);
         IList<ArticleGroup> GetArticleGroupsFromDateTime(DateTime minDate);
         void UpdateArticleGroup(ArticleGroup updatedGroup);
     }

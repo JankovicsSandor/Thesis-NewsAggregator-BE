@@ -6,8 +6,8 @@ using System.Text;
 
 namespace News.BussinessLogic.GetArticle
 {
-    public class GetArticleByDescriptionCommand : IRequest<NewsItemResponse>
+    public class GetArticleByGUIDCommand : IRequest<NewsItemResponse>
     {
-        public string Description { get; set; }
+        public string GuId { get; set; }
     }
 }

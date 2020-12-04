@@ -15,7 +15,7 @@ namespace News.BussinessLogic.ArticleResource.GetArticleByDescription
     /// Handler class of the getarticle controller. This class handles the request coming from the writer api to get the article item 
     /// from description
     /// </summary>
-    public class GetArticleByDescriptionHandler : IRequestHandler<GetArticleByDescriptionCommand, NewsItemResponse>
+    public class GetArticleByDescriptionHandler : IRequestHandler<GetArticleByGUIDCommand, NewsItemResponse>
     {
         private IArticleRepository _articleRepository;
 
@@ -34,9 +34,9 @@ namespace News.BussinessLogic.ArticleResource.GetArticleByDescription
         /// <param name="request">The description query for the article</param>
         /// <param name="cancellationToken"></param>
         /// <returns>Returns the first matching article item based on the description.</returns>
-        public Task<NewsItemResponse> Handle(GetArticleByDescriptionCommand request, CancellationToken cancellationToken)
+        public Task<NewsItemResponse> Handle(GetArticleByGUIDCommand request, CancellationToken cancellationToken)
         {
-            NewsItemResponse actualArticle = _articleRepository.GetArticleByDescription(request.Description).FirstOrDefault();
+            NewsItemResponse actualArticle = _articleRepository.GetArticleByGuid(request.GuId).FirstOrDefault();
             return Task.FromResult(actualArticle);
         }
     }

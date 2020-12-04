@@ -5,6 +5,6 @@ namespace Writer.BussinessLogic.ExternalDataProvider.NewsData
 {
     public interface INewsHttpClient
     {
-        Task<GetNewsArticleByDescriptionResponse> GetArticleFromDescription(string description);
+        Task<GetNewsArticleByDescriptionResponse> GetArticleFromGUID(string description);
     }
 }

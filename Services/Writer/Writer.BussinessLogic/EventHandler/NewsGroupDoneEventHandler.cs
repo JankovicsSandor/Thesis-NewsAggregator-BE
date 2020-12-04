@@ -30,32 +30,25 @@ namespace Writer.BussinessLogic.EventHandler
         /// <returns></returns>
         public async Task Handle(NewsGroupDoneEvent @event)
         {
-            //
-            DateTime minGroupDate = DateTime.Now.Date.AddDays(-2);
 
-            IList<ArticleGroup> articleGroups = _mongoService.GetArticleGroupsFromDateTime(minGroupDate);
-            // TODO handle the similarities
-            bool articleInsertedToGroup = false;
-            int i = 0;
-            string actualSimilarText = "";
-            if (articleGroups != null)
+            if (!string.IsNullOrEmpty(@event.Similarity))
             {
-                while (!articleInsertedToGroup && i < @event.Similarities.Count)
+                DateTime minGroupDate = DateTime.Now.Date.AddDays(-2);
+                IList<ArticleGroup> articleGroups = _mongoService.GetArticleGroupsFromDateTime(minGroupDate);
+                GetNewsArticleByDescriptionResponse similarArticle = await _newsClient.GetArticleFromGUID(@event.Similarity);
+                if (articleGroups != null)
                 {
-                    actualSimilarText = @event.Similarities[i];
-                    GetNewsArticleByDescriptionResponse similarArticle = await _newsClient.GetArticleFromDescription(actualSimilarText);
+                    ArticleGroup groupContainArticle = articleGroups.FirstOrDefault(e => e.Similar.Any(article => article.NewsID == similarArticle.Guid));
+                    //Similar article object from the news database
                     if (similarArticle != null)
                     {
-                        ArticleGroup groupContainArticle = articleGroups.FirstOrDefault(e => e.Similar.Any(article => article.NewsID == similarArticle.Guid));
-                        // The new article is found in the last two days article groups.
-                        // Have to add it as a similar article
                         if (groupContainArticle != null)
                         {
                             Article newArticle = new Article()
                             {
                                 NewsID = @event.Id.ToString(),
                                 Description = @event.NewsItem.Description,
-                                Link = @event.NewsItem.Description,
+                                Link = @event.NewsItem.Link,
                                 Picture = @event.NewsItem.Picture,
                                 PublishDate = @event.NewsItem.PublishDate,
                                 Title = @event.NewsItem.Title,
@@ -65,32 +58,88 @@ namespace Writer.BussinessLogic.EventHandler
                             groupContainArticle.Similar.Add(newArticle);
                             groupContainArticle.LatestArticleDate = @event.NewsItem.PublishDate;
                             _mongoService.UpdateArticleGroup(groupContainArticle);
-                            articleInsertedToGroup = true;
+                        }
+                        // Similar article is not in the database. Have to create a chroup with the two items
+                        else
+                        {
+                            // Article doesn't fit into any of the groups. Have to create a new group
+                            ArticleGroup newGroup = new ArticleGroup()
+                            {
+                                CreateDate = DateTime.Now,
+                                Similar = new List<Article>() {
+                                    //First article is the new article
+                                    new Article()
+                                    {
+                                        NewsID = @event.Id.ToString(),
+                                        Description = @event.NewsItem.Description,
+                                        Link = @event.NewsItem.Link,
+                                        Picture = @event.NewsItem.Picture,
+                                        PublishDate = @event.NewsItem.PublishDate,
+                                        Title = @event.NewsItem.Title,
+                                        FeedName = @event.NewsItem.FeedName,
+                                        FeedPicture = @event.NewsItem.FeedPicture
+                                    },
+                                    // Second article is the similar article
+                                    new Article()
+                                    {
+                                        NewsID =similarArticle.Guid,
+                                        Description = similarArticle.Description,
+                                        Link = similarArticle.Link,
+                                        Picture =similarArticle.Picture,
+                                        PublishDate = similarArticle.PublishDate,
+                                        Title = similarArticle.Title,
+                                        FeedName = similarArticle.FeedName,
+                                        FeedPicture = similarArticle.FeedPicture
+                                    }
+                                }
+                            };
+                            newGroup.LatestArticleDate = @event.NewsItem.PublishDate;
+                            _mongoService.AddArticleGroup(newGroup);
                         }
                     }
-
-                    i++;
+                }
+                else
+                {
+                    ArticleGroup newGroup = new ArticleGroup()
+                    {
+                        CreateDate = DateTime.Now,
+                        Similar = new List<Article>() {
+                                    new Article()
+                                    {
+                                        NewsID = @event.Id.ToString(),
+                                        Description = @event.NewsItem.Description,
+                                        Link = @event.NewsItem.Link,
+                                        Picture = @event.NewsItem.Picture,
+                                        PublishDate = @event.NewsItem.PublishDate,
+                                        Title = @event.NewsItem.Title,
+                                        FeedName = @event.NewsItem.FeedName,
+                                        FeedPicture = @event.NewsItem.FeedPicture
+                                    }
+                                }
+                    };
+                    newGroup.LatestArticleDate = @event.NewsItem.PublishDate;
+                    _mongoService.AddArticleGroup(newGroup);
                 }
             }
-            // Article doesn't fit into any of the groups. Have to create a new group
-            if (!articleInsertedToGroup)
+            else
             {
+                // Article doesn't have any similarity. Have to create a new group
                 ArticleGroup newGroup = new ArticleGroup()
                 {
                     CreateDate = DateTime.Now,
                     Similar = new List<Article>() {
-                            new Article()
-                            {
-                                NewsID = @event.Id.ToString(),
-                                Description = @event.NewsItem.Description,
-                                Link = @event.NewsItem.Description,
-                                Picture = @event.NewsItem.Picture,
-                                PublishDate = @event.NewsItem.PublishDate,
-                                Title = @event.NewsItem.Title,
-                                FeedName = @event.NewsItem.FeedName,
-                                FeedPicture = @event.NewsItem.FeedPicture
-                            }
-                        }
+                                    new Article()
+                                    {
+                                        NewsID = @event.Id.ToString(),
+                                        Description = @event.NewsItem.Description,
+                                        Link = @event.NewsItem.Link,
+                                        Picture = @event.NewsItem.Picture,
+                                        PublishDate = @event.NewsItem.PublishDate,
+                                        Title = @event.NewsItem.Title,
+                                        FeedName = @event.NewsItem.FeedName,
+                                        FeedPicture = @event.NewsItem.FeedPicture
+                                    }
+                                }
                 };
                 newGroup.LatestArticleDate = @event.NewsItem.PublishDate;
                 _mongoService.AddArticleGroup(newGroup);
