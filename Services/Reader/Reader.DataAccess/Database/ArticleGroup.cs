@@ -13,7 +13,7 @@ namespace Reader.DataAccess.Database
         public string Id { get; set; }
 
         [BsonElement("Similar")]
-        public Article Similar { get; set; }
+        public IList<Article> Similar { get; set; }
 
         public DateTime CreateDate { get; set; }
 

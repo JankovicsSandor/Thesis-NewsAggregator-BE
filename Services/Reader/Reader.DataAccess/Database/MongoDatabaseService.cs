@@ -33,15 +33,14 @@ namespace Reader.DataAccess.Database
             }
             _articleGroup = _context.GetCollection<ArticleGroup>(collectionName);
         }
-
-        public void AddArticleGroup(ArticleGroup newGroup)
-        {
-            _articleGroup.InsertOne(newGroup);
-        }
-
         public List<ArticleGroup> GetAllArticleGroup()
         {
             return _articleGroup.Find(article => true).ToList();
+        }
+
+        public List<ArticleGroup> GetHomePageArticles(DateTime minDate)
+        {
+            return _articleGroup.Find(article => article.LatestDate >= minDate).ToList();
         }
     }
 }

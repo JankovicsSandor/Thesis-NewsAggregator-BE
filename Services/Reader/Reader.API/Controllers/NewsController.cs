@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Reader.BussinessLogic.Homepage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +12,18 @@ namespace Reader.API.Controllers
     [ApiController]
     public class NewsController : Controller
     {
-        public NewsController()
-        {
+        private IMediator _mediator;
 
+        public NewsController(IMediator meditor)
+        {
+            _mediator = meditor;
         }
 
-        [HttpGet("")]
-        public IActionResult GetNewsArticles()
+        [HttpGet("homepage")]
+        public async Task<IActionResult> GetHomePageArticleData()
         {
-            return Ok();
+
+            return Ok(await _mediator.Send(new GetHomePageArticleListQuery()));
         }
     }
 }

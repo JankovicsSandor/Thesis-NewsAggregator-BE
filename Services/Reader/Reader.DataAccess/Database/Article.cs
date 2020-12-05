@@ -8,8 +8,7 @@ namespace Reader.DataAccess.Database
     public partial class Article
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public ObjectId _id { get; set; }
 
         [BsonElement("Title")]
         [BsonRepresentation(BsonType.String)]
@@ -31,7 +30,24 @@ namespace Reader.DataAccess.Database
         [BsonRepresentation(BsonType.String)]
         public string Picture { get; set; }
 
-        // TODO check if needed
-        // public Feed Feed { get; set; }
+
+        [BsonElement("FeedName")]
+        [BsonRepresentation(BsonType.String)]
+        public string FeedName { get; set; }
+
+
+        [BsonElement("FeedPicture")]
+        [BsonRepresentation(BsonType.String)]
+        public string FeedPicture { get; set; }
+
+
+        [BsonElement("NewsId")]
+        [BsonRepresentation(BsonType.String)]
+        public string NewsID { get; set; }
+
+        public Article()
+        {
+            _id = ObjectId.GenerateNewId();
+        }
     }
 }
