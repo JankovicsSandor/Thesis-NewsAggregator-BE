@@ -1,11 +1,9 @@
-import gensim.models as g
 import re
 import os
 import nltk
-nltk.download('wordnet')
+nltk.download('stopwords')
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize
-from nltk.stem import PorterStemmer, WordNetLemmatizer
 import requests
 from newsItemVector import NewsItemVector
 from scipy.spatial import distance
@@ -19,7 +17,12 @@ class TextSimilarity(object):
       self.getTodayArticles()
 
    def getTodayArticles(self):
-      todayArticles = requests.get(os.environ['NEWS_API'] + "article/today").json()
+      todayArticles=[]
+      try:
+         todayArticles= requests.get(os.environ['NEWS_API'] + "article/today").json()
+      except:
+         todayArticles=[]
+
       for articleItem in todayArticles:
          processedText = self.preprocessText(articleItem["description"])
 
@@ -95,21 +98,3 @@ class TextSimilarity(object):
       stop_words = set(stopwords.words("english"))
       tokens = word_tokenize(text)
       return ' '.join([i for i in tokens if not i in stop_words])
-
-   def stemText(self,text):
-      if (text is None):
-         raise TypeError("Input text is empty")
-      if (not isinstance(text, str)):
-         raise TypeError("Input text is not a string")
-      stemmer= PorterStemmer()
-      tokenized=word_tokenize(text)
-      return ' '.join([stemmer.stem(word) for word in tokenized])
-
-   def lemmanizeText(self,text):
-      if (text is None):
-         raise TypeError("Input text is empty")
-      if (not isinstance(text, str)):
-         raise TypeError("Input text is not a string")
-      lemmatizer=WordNetLemmatizer()
-      tokenized=word_tokenize(text)
-      return ' '.join([lemmatizer.lemmatize(word) for word in tokenized])

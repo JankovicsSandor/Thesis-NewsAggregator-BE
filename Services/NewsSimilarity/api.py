@@ -14,11 +14,6 @@ import json
 def index():
     return "Hello, World!"
 
-#@app.route(PREFIX+'/mostSimilar',methods=["POST"])
-#def getMostSimilarArticles():
-#    if not request.json:
-#        abort(400)
-#    return jsonify({'id':convertedId}),201
 counter=1
 def newMessage(ch, method, properties, body):
     global counter

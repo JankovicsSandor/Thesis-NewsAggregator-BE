@@ -2,3 +2,4 @@ flask
 pika
 nltk
 scipy
+requests

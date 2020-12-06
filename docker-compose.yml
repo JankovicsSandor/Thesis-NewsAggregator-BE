@@ -30,19 +30,6 @@ services:
         - "10000:80"
     volumes:
         - ./ssl/webserver.pfx:/https/webserver.pfx
-  user.api:
-    image: ${DOCKER_REGISTRY-}userapi
-    environment:
-        - MYSQLCONNSTR=Server=host.docker.internal;user id=root;password=admin;database=news_aggregator_user;
-        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
-        - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
-    build:
-      context: .
-      dockerfile: Services/User/User.API/Dockerfile
-    ports:
-        - "10005:80"
-    volumes:
-        - ./ssl/webserver.pfx:/https/webserver.pfx
   news.api:
     image: ${DOCKER_REGISTRY-}newsapi
     environment:
@@ -99,5 +86,20 @@ services:
       dockerfile: ./Dockerfile
     ports:
         - "10025:80"
+  collector.api:
+    image: ${DOCKER_REGISTRY-}collectorapi
+    environment:
+        - RABBITMQ_USER=client
+        - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
+        - RABBITMQ_HOST=host.docker.internal
+        - NEWS_API=http://host.docker.internal:10010/api/news/
+        - LASER_API=http://host.docker.internal:10025/
+    build:
+      context: ./Services/NewsSimilarity
+      dockerfile: ./Dockerfile
+    ports:
+      - "10040:5000"
+    links:
+      - "news.api"
         
 
