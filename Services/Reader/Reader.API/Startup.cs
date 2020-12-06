@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Reader.API.Controllers;
+using Reader.BussinessLogic.Homepage;
 using Reader.DataAccess.Database;
 
 namespace Reader.API
@@ -29,7 +30,8 @@ namespace Reader.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(typeof(Startup).Assembly);
-            services.AddMediatR(typeof(NewsController).Assembly);
+            services.AddMediatR(typeof(HomePageController).Assembly);
+            services.AddMediatR(typeof(GetHomePageArticleListHandler).Assembly);
 
 
             services.AddSingleton<IMongoDatabaseService, MongoDatabaseService>();
@@ -56,7 +58,7 @@ namespace Reader.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/api/news/read/health_check");
+                endpoints.MapHealthChecks("health_check");
                 endpoints.MapControllers();
             });
         }

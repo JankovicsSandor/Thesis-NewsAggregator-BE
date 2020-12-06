@@ -55,6 +55,9 @@ services:
     environment:
         - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webserver.pfx
         - ASPNETCORE_Kestrel__Certificates__Default__Password=Password1
+        - MONGODB_CONNECTION=mongodb://client:clientPW@host.docker.internal:27017/NewsGroup
+        - MONGODB_DATABASE=NewsGroup
+        - MONGODB_COLLECTION_NAME=News
     volumes:
         - ./ssl/webserver.pfx:/https/webserver.pfx
     ports:

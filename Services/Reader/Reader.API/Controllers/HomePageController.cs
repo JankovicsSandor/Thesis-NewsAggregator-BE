@@ -10,16 +10,16 @@ namespace Reader.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class NewsController : Controller
+    public class HomePageController : Controller
     {
         private IMediator _mediator;
 
-        public NewsController(IMediator meditor)
+        public HomePageController(IMediator meditor)
         {
             _mediator = meditor;
         }
 
-        [HttpGet("homepage")]
+        [HttpGet("")]
         public async Task<IActionResult> GetHomePageArticleData()
         {
 

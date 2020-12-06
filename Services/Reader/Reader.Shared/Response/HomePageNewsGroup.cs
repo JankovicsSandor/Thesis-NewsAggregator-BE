@@ -7,5 +7,10 @@ namespace Reader.Shared.Response
     public class HomePageNewsGroup
     {
         public IList<HomePageNewsItem> NewsItem { get; set; }
+
+        public HomePageNewsGroup()
+        {
+            NewsItem = new List<HomePageNewsItem>();
+        }
     }
 }
