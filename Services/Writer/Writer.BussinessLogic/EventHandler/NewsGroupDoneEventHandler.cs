@@ -38,7 +38,7 @@ namespace Writer.BussinessLogic.EventHandler
                 GetNewsArticleByDescriptionResponse similarArticle = await _newsClient.GetArticleFromGUID(@event.Similarity);
                 if (articleGroups != null)
                 {
-                    ArticleGroup groupContainArticle = articleGroups.FirstOrDefault(e => e.Similar.Any(article => article.NewsID == similarArticle.Guid));
+                    ArticleGroup groupContainArticle = articleGroups.FirstOrDefault(e => e.Similar.Any(article => article.NewsID == similarArticle?.Guid));
                     //Similar article object from the news database
                     if (similarArticle != null)
                     {

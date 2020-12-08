@@ -57,8 +57,6 @@ namespace Writer.API
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<NewsGroupDoneEvent, NewsGroupDoneEventHandler>();
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();

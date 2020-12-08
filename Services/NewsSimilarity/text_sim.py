@@ -14,8 +14,8 @@ class TextSimilarity(object):
 
    newsDict=[]
 
-   def __init__(self):
-      self.getTodayArticles()
+#   def __init__(self):
+#      self.getTodayArticles()
 
    def getTodayArticles(self):
       todayArticles=[]
@@ -25,32 +25,32 @@ class TextSimilarity(object):
          todayArticles=[]
 
       for articleItem in todayArticles:
-         processedText = self.preprocessText(articleItem["description"])
-
-         embeddingResult=self.createWordVectorFromText(processedText)
+         if articleItem and articleItem["description"]:
+            processedText = self.preprocessText(articleItem["description"])
+            embeddingResult=self.createWordVectorFromText(processedText)     
+            self.newsDict.append(NewsItemVector(articleItem["guid"],articleItem["description"],processedText,embeddingResult))
          
-         self.newsDict.append(NewsItemVector(articleItem["guid"],articleItem["description"],processedText,embeddingResult))
-       
 
-
-   def getMostSimilarNews(self, guid,articleDescription):
-      maxSimilarity = -45
-      similarArticleDescription = ""
-      originalDescription=""
-      newItemProcessedText = self.preprocessText(articleDescription)
-      newArticleVector=self.createWordVectorFromText(newItemProcessedText)
-      for todayArticle in self.newsDict:    
-         cosine_similarity = 1 - distance.cosine(newArticleVector, todayArticle.vector)
-         if cosine_similarity > maxSimilarity:
-            maxSimilarity = cosine_similarity
-            similarArticleDescription = todayArticle.guid
-            originalDescription=todayArticle.origText
-      self.newsDict.append(NewsItemVector(guid,articleDescription,newItemProcessedText,newArticleVector))
-      print("Article: "+ articleDescription)
-      print("Similarity: " + str(maxSimilarity))
-      print("Similar: "+ originalDescription)
-      return similarArticleDescription
-      
+   def getMostSimilarNews(self, guid, articleDescription):
+      similarArticleGuid = ""
+      if articleDescription:
+         maxSimilarity = -45 
+         originalDescription=""
+         newItemProcessedText = self.preprocessText(articleDescription)
+         newArticleVector=self.createWordVectorFromText(newItemProcessedText)
+         for todayArticle in self.newsDict:
+            if todayArticle.guid != guid:    
+               cosine_similarity = 1 - distance.cosine(newArticleVector, todayArticle.vector)
+               if cosine_similarity > maxSimilarity:
+                  maxSimilarity = cosine_similarity
+                  similarArticleGuid = todayArticle.guid
+                  originalDescription=todayArticle.origText
+         self.newsDict.append(NewsItemVector(guid,articleDescription,newItemProcessedText,newArticleVector))
+         print("Article: "+ articleDescription)
+         print("Similarity: " + str(maxSimilarity))
+         print("Similar: "+ originalDescription)
+      return similarArticleGuid
+         
             
    def createWordVectorFromText(self, processedText):
       params = {"q": processedText, "lang": "en"}

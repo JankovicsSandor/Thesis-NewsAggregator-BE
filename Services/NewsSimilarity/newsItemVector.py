@@ -3,7 +3,8 @@ class NewsItemVector(object):
     originalDescription=""
     newsItem=""
     vector = ""
-    origText="" 
+    origText = ""
+    guid="" 
    
     
     def __init__(self, guid,originalText,processedText,vector):

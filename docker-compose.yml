@@ -90,7 +90,7 @@ services:
     ports:
         - "10025:80"
   collector.api:
-    image: ${DOCKER_REGISTRY-}collectorapi
+    image: ${docker_registry-}collectorapi
     environment:
         - RABBITMQ_USER=client
         - RABBITMQ_PASS=HXAJ2wsELb8DLvvZ
@@ -98,11 +98,9 @@ services:
         - NEWS_API=http://host.docker.internal:10010/api/news/
         - LASER_API=http://host.docker.internal:10025/
     build:
-      context: ./Services/NewsSimilarity
+      context: ./services/NewsSimilarity
       dockerfile: ./Dockerfile
     ports:
       - "10040:5000"
-    links:
-      - "news.api"
         
 

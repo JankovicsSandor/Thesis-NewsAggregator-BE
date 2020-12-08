@@ -33,6 +33,14 @@ namespace Reader.API
             services.AddMediatR(typeof(HomePageController).Assembly);
             services.AddMediatR(typeof(GetHomePageArticleListHandler).Assembly);
 
+            // Add Cors
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
 
             services.AddSingleton<IMongoDatabaseService, MongoDatabaseService>();
 
@@ -47,10 +55,8 @@ namespace Reader.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("CorsPolicy");
             app.UsePathBase("/api/news/read");
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
