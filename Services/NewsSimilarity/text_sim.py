@@ -14,8 +14,8 @@ class TextSimilarity(object):
 
    newsDict=[]
 
-#   def __init__(self):
-#      self.getTodayArticles()
+   def __init__(self):
+      self.getTodayArticles()
 
    def getTodayArticles(self):
       todayArticles=[]
@@ -74,12 +74,6 @@ class TextSimilarity(object):
       
       # remove stop words
       convertedString = self.removeStopwords(convertedString)
-
-      # stemming text
-      #convertedString = self.stemText(convertedString)
-
-      # lemmanize text
-     # convertedString = self.lemmanizeText(convertedString)
 
       return convertedString
    
