@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using News.BussinessLogic.GetArticle;
+using News.BussinessLogic.ArticleResource.GetArticleByGUID;
 using News.BussinessLogic.TodayArticle;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

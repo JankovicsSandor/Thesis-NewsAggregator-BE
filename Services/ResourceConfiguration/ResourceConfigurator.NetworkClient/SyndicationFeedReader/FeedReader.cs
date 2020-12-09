@@ -21,6 +21,7 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
             _metaDataReader = metaReader;
         }
 
+        // TODO add unit test
         public ResourcePropertiesModel GetResourceProperties(string url)
         {
             XmlReader reader = XmlReader.Create(url);

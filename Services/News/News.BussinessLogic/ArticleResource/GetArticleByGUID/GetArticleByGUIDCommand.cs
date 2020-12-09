@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace News.BussinessLogic.GetArticle
+namespace News.BussinessLogic.ArticleResource.GetArticleByGUID
 {
     public class GetArticleByGUIDCommand : IRequest<NewsItemResponse>
     {

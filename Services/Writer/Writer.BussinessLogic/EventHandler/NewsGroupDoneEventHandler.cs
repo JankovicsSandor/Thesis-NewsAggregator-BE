@@ -23,6 +23,7 @@ namespace Writer.BussinessLogic.EventHandler
             _mongoService = mongoService ?? throw new ArgumentNullException(nameof(mongoService));
         }
 
+        // TODO add unit test
         /// <summary>
         /// Handles the news groupping done event sent by the news similarity python app
         /// </summary>

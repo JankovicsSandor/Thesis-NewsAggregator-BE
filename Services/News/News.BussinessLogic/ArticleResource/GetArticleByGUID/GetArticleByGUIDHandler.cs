@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using News.BussinessLogic.GetArticle;
 using News.DataAccess.Repository;
 using News.Shared.Response;
 using System;
@@ -9,13 +8,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace News.BussinessLogic.ArticleResource.GetArticleByDescription
+namespace News.BussinessLogic.ArticleResource.GetArticleByGUID
 {
     /// <summary>
     /// Handler class of the getarticle controller. This class handles the request coming from the writer api to get the article item 
     /// from description
     /// </summary>
-    public class GetArticleByDescriptionHandler : IRequestHandler<GetArticleByGUIDCommand, NewsItemResponse>
+    public class GetArticleByGUIDHandler : IRequestHandler<GetArticleByGUIDCommand, NewsItemResponse>
     {
         private IArticleRepository _articleRepository;
 
@@ -23,7 +22,7 @@ namespace News.BussinessLogic.ArticleResource.GetArticleByDescription
         /// Creates a new instance of GetArticleByDescriptionHandler
         /// </summary>
         /// <param name="articleRepository">Data access for the articles</param>
-        public GetArticleByDescriptionHandler(IArticleRepository articleRepository)
+        public GetArticleByGUIDHandler(IArticleRepository articleRepository)
         {
             _articleRepository = articleRepository ?? throw new ArgumentNullException(nameof(articleRepository));
         }
@@ -36,6 +35,11 @@ namespace News.BussinessLogic.ArticleResource.GetArticleByDescription
         /// <returns>Returns the first matching article item based on the description.</returns>
         public Task<NewsItemResponse> Handle(GetArticleByGUIDCommand request, CancellationToken cancellationToken)
         {
+            // TODO add unit test
+            if (request != null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
             NewsItemResponse actualArticle = _articleRepository.GetArticleByGuid(request.GuId).FirstOrDefault();
             return Task.FromResult(actualArticle);
         }

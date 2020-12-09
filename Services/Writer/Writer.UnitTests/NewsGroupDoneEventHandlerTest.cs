@@ -86,5 +86,28 @@ namespace Writer.UnitTests
             mongoService.Verify(e => e.AddArticleGroup(It.IsAny<ArticleGroup>()), Times.Once);
             mongoService.Verify(e => e.UpdateArticleGroup(It.IsAny<ArticleGroup>()), Times.Never);
         }
+
+        [Test]
+        public async Task Handle_Test_When_Correct_Param_Is_Given_Database_Doesnt_Return_Data()
+        {
+
+            Mock<INewsHttpClient> newsHttpClient = new Mock<INewsHttpClient>();
+            Mock<IMongoDatabaseService> mongoService = new Mock<IMongoDatabaseService>();
+
+            mongoService.Setup(e => e.GetArticleGroupsFromDateTime(It.IsAny<DateTime>())).Returns((IList<ArticleGroup>)null);
+            newsHttpClient.Setup(e => e.GetArticleFromGUID(It.IsAny<string>())).ReturnsAsync(new GetNewsArticleByDescriptionResponse() { Guid = "bbbb-4444-bbbb" });
+
+            NewsGroupDoneEventHandler handler = new NewsGroupDoneEventHandler(newsHttpClient.Object, mongoService.Object);
+
+            await handler.Handle(new NewsGroupDoneEvent()
+            {
+                NewsItem = new NewsGroupDoneNewsItem(),
+                Similarity = "Item2"
+
+            });
+            newsHttpClient.Verify(e => e.GetArticleFromGUID(It.IsAny<string>()), Times.Once);
+            mongoService.Verify(e => e.AddArticleGroup(It.IsAny<ArticleGroup>()), Times.Once);
+            mongoService.Verify(e => e.UpdateArticleGroup(It.IsAny<ArticleGroup>()), Times.Never);
+        }
     }
 }

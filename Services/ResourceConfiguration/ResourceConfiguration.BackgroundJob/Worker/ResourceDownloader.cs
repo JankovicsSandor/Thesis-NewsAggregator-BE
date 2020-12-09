@@ -22,14 +22,14 @@ namespace ResourceConfiguration.BackgroundJob.Worker
         private readonly IEventBus _eventHub;
         private readonly ILogger<ResourceDownloader> _logger;
         private readonly IResourceToDataNetworkClient _resourceClient;
-
+        // TODO write unit test
         public ResourceDownloader(newsaggregatorresourceContext databasecontext, IResourceToDataNetworkClient resourceNetworkClient, IFeedReader reader, IEventBus eventBus, ILogger<ResourceDownloader> logger)
         {
-            _databasecontext = databasecontext;
-            _reader = reader;
-            _eventHub = eventBus;
-            _logger = logger;
-            _resourceClient = resourceNetworkClient;
+            _databasecontext = databasecontext ?? throw new ArgumentNullException(nameof(databasecontext));
+            _reader = reader ?? throw new ArgumentNullException(nameof(reader));
+            _eventHub = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _resourceClient = resourceNetworkClient ?? throw new ArgumentNullException(nameof(resourceNetworkClient));
         }
 
 

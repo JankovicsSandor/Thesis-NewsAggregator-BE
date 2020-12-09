@@ -65,6 +65,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Writer.UnitTests", "Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reader.Shared", "Services\Reader\Reader.Shared\Reader.Shared.csproj", "{6962D99D-E2FE-4772-8AFC-F097368B20DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "News.Test", "..\News.Test\News.Test.csproj", "{82E1C88F-8D52-4596-8097-F24D70FB6BF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,10 @@ Global
 		{6962D99D-E2FE-4772-8AFC-F097368B20DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6962D99D-E2FE-4772-8AFC-F097368B20DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6962D99D-E2FE-4772-8AFC-F097368B20DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82E1C88F-8D52-4596-8097-F24D70FB6BF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82E1C88F-8D52-4596-8097-F24D70FB6BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82E1C88F-8D52-4596-8097-F24D70FB6BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82E1C88F-8D52-4596-8097-F24D70FB6BF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,6 +198,7 @@ Global
 		{11DEC7ED-2E34-4A75-AACC-67BC62F5A9EC} = {BDA08814-11EE-477A-B23A-5A50F0487D20}
 		{28AEDFC2-8E24-44D7-A7E2-4175E16C8D17} = {A68FEBDE-D143-4931-9C43-7E431E611DF0}
 		{6962D99D-E2FE-4772-8AFC-F097368B20DE} = {BDA08814-11EE-477A-B23A-5A50F0487D20}
+		{82E1C88F-8D52-4596-8097-F24D70FB6BF7} = {6974852D-3D4E-4BDC-833A-B42BA65F289F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {25E8E551-6190-435A-A26D-C5E8AD62C320}
