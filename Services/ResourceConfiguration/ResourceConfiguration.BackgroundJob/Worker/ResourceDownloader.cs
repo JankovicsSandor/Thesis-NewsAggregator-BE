@@ -22,7 +22,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
         private readonly IEventBus _eventHub;
         private readonly ILogger<ResourceDownloader> _logger;
         private readonly IResourceToDataNetworkClient _resourceClient;
-        // TODO write unit test
         public ResourceDownloader(newsaggregatorresourceContext databasecontext, IResourceToDataNetworkClient resourceNetworkClient, IFeedReader reader, IEventBus eventBus, ILogger<ResourceDownloader> logger)
         {
             _databasecontext = databasecontext ?? throw new ArgumentNullException(nameof(databasecontext));

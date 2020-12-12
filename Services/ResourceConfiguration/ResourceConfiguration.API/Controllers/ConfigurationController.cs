@@ -32,9 +32,6 @@ namespace ResourceConfiguration.API.Controllers
             return Ok();
         }
 
-
-
-        //TODO return the same model as the newsGroup
         [HttpPost("request")]
         public async Task<IActionResult> RequestResourceProperties([FromBody] RequestResourceProperties rssUrlModel)
         {
