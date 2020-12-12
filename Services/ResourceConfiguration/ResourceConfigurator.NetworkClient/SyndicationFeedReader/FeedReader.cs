@@ -21,9 +21,14 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
             _metaDataReader = metaReader;
         }
 
-        // TODO add unit test
         public ResourcePropertiesModel GetResourceProperties(string url)
         {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+
+
             XmlReader reader = XmlReader.Create(url);
             SyndicationFeed feed = SyndicationFeed.Load(reader);
             reader.Close();
@@ -51,7 +56,6 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
             return feed.ImageUrl.AbsoluteUri;
         }
 
-        // TODO make function effective with removing old items
         public IEnumerable<AddNewArticleEvent> GetFeedContent(string url)
         {
             XmlReader reader = XmlReader.Create(url);
@@ -59,8 +63,6 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
             reader.Close();
 
             ConcurrentBag<AddNewArticleEvent> articles = new ConcurrentBag<AddNewArticleEvent>();
-
-            //TODO check for paralell execution
 
             Parallel.ForEach(feed.Items, (currentArticle) =>
             {
@@ -74,7 +76,6 @@ namespace ResourceConfigurator.NetworkClient.SyndicationFeedReader
                         Title = currentArticle.Title.Text,
                         Link = currentArticle.Links.FirstOrDefault().Uri.ToString(),
                         PublishDate = currentArticle.PublishDate.DateTime,
-                        // TODO Add picture
                         Picture = _metaDataReader.GetWebsiteMetadata(newsUrl).ImageUrl
                     };
                     articles.Add(result);

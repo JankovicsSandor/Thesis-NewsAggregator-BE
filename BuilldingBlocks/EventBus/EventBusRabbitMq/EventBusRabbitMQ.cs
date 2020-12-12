@@ -130,15 +130,6 @@ namespace EventBusRabbitMQ
                 {
                     _persistentConnection.TryConnect();
                 }
-
-                /*
-                 * TODO create external function from bindings and creations
-                 * using (var channel = _persistentConnection.CreateModel())
-                {
-                    channel.QueueBind(queue: _queueName,
-                                      exchange: brokerName,
-                                      routingKey: eventName);
-                }*/
             }
         }
 
@@ -214,17 +205,6 @@ namespace EventBusRabbitMQ
             _logger.LogTrace("Creating RabbitMQ consumer channel");
 
             var channel = _persistentConnection.CreateModel();
-
-            /*
-             * TODO move to external function
-             * channel.ExchangeDeclare(exchange: brokerName,
-                                    type: exchangeMode);
-
-            channel.QueueDeclare(queue: _queueName,
-                                 durable: true,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);*/
 
             channel.CallbackException += (sender, ea) =>
             {

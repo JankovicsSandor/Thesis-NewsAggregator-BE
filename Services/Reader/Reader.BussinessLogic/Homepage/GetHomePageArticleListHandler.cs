@@ -19,8 +19,7 @@ namespace Reader.BussinessLogic.Homepage
         }
         public Task<IList<HomePageNewsGroup>> Handle(GetHomePageArticleListQuery request, CancellationToken cancellationToken)
         {
-            //TODO write tests for this class
-            List<ArticleGroup> homepage = _database.GetHomePageArticles(DateTime.Now.AddDays(-2));
+            List<ArticleGroup> homepage = _database.GetHomePageArticles(DateTime.Now.AddDays(-20));
             IList<HomePageNewsGroup> returnValue = new List<HomePageNewsGroup>();
             foreach (ArticleGroup oneArticleGroup in homepage)
             {

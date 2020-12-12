@@ -35,8 +35,7 @@ namespace News.BussinessLogic.ArticleResource.GetArticleByGUID
         /// <returns>Returns the first matching article item based on the description.</returns>
         public Task<NewsItemResponse> Handle(GetArticleByGUIDCommand request, CancellationToken cancellationToken)
         {
-            // TODO add unit test
-            if (request != null)
+            if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }

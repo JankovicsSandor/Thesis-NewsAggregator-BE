@@ -39,7 +39,7 @@ namespace ResourceConfiguration.BackgroundJob
                 throw new Exception($"Delay value is not a number value: {delayAmount}");
             }
 
-            _timer = new Timer(DoWork, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(amount));
+            _timer = new Timer(DoWork, null, TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(amount));
 
             return Task.CompletedTask;
         }

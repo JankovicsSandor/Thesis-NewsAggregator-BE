@@ -36,7 +36,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
         public async Task ProcessResources()
         {
             List<Resource> resourceList = _databasecontext.Resource.Where(e => e.FeedId != null).ToList();
-            // TODO check if resources can work paralell
             foreach (Resource oneResource in resourceList)
             {
                 await ProcessOneResource(oneResource);
@@ -64,7 +63,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
                         item.FeedName = actualFeed.Name;
                         item.FeedPicture = actualFeed.Picture;
                         // Publish the new article to the hub
-                        // TODO handle failure
                         _eventHub.Publish(item);
 
                         lastSource.Title = item.Title;
@@ -72,7 +70,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
                         _databasecontext.Update(lastSource);
                         _databasecontext.SaveChanges();
 
-                        // TODO add integration event and pubish to hub
                     }
                     catch (Exception e)
                     {
@@ -83,7 +80,6 @@ namespace ResourceConfiguration.BackgroundJob.Worker
             }
             else
             {
-                // TODO Add update to description and grouping
                 AddNewArticleEvent item = feedContent.ElementAt(i);
                 while (!item.Title.Equals(lastSource.Title, StringComparison.OrdinalIgnoreCase) && !item.Description.Equals(lastSource.Description, StringComparison.OrdinalIgnoreCase))
                 {

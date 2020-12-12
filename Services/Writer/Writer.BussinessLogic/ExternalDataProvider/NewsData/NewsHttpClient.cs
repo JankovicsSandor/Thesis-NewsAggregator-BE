@@ -32,7 +32,6 @@ namespace Writer.BussinessLogic.ExternalDataProvider.NewsData
             string content = await actualArticleRequest.Content.ReadAsStringAsync();
             if (!actualArticleRequest.IsSuccessStatusCode)
             {
-                // TODO handle failure
                 _logger.LogError("Get news by description failed:" + content);
             }
 
